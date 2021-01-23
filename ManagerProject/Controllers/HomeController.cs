@@ -25,7 +25,7 @@ namespace ManagerProject.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Your contact page. Như Khánh đã vào!";
 
             return View();
         }
