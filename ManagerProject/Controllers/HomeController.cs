@@ -15,7 +15,7 @@ namespace ManagerProject.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application descrjhbjhbhjbhjiption page.";
+            ViewBag.Message = "Your application descrjhbjhbhjbhjiption jljljjpage.";
 
             return View();
         }
