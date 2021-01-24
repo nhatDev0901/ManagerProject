@@ -30,5 +30,10 @@ namespace ManagerProject.Controllers
             ViewBag.Message = "Đcm da đen";
             return View();
         }
+
+        public ActionResult AddContribution()
+        {
+            return PartialView("_AddNew");
+        }
     }
 }
