@@ -17,6 +17,7 @@ namespace ManagerProject.Controllers
         {
             ViewBag.Message = "Your application descrjhbjhbhjbhjiptdddiodsdsdsdsdn jljljjpage.";
             ViewBag.Message = "DuongTrN";
+            ViewBag.Message = "tao ne/ doan xem ai, dcm";
 
             //hello tao nè
 
