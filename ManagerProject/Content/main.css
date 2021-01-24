@@ -522,3 +522,7 @@ input.error, select.error, textarea.error, input.input-validation-error, select.
 .alert .close{
     margin-top:-5px
 }
+
+.input-required{
+    color: red
+}

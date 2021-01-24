@@ -473,6 +473,7 @@
     <Content Include="Content\font-awesome-4.7.0\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\font-awesome-4.7.0\HELP-US-OUT.txt" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\kendo\css\kendo.bootstrap-v4.min.css" />
     <Content Include="Content\kendo\css\kendo.mobile.all.min.css" />
     <Content Include="Content\kendo\script\angular.min.js" />

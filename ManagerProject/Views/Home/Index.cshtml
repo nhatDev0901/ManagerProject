@@ -4,7 +4,7 @@
 }
 @section slider{
     <li class="nav-item">
-        <a class="nav-link" onclick='popupUpdatedQuantily()'>
+        <a class="nav-link" onclick='popupUpdatedQuantily()' href="javascript:void(0)">
             <i class="menu-icon typcn typcn-shopping-bag"></i>
             <span class="menu-title">ADD NEW CONTRIBUTION</span>
         </a>
@@ -16,6 +16,14 @@
 <div id="popupEdit">
     <div id="wndEdit"></div>
 </div>
+
+<script id="status-template" type="text/x-kendo-template">
+    <div class="d-flex w-100 text-center">
+        <a  title="Cập nhật số lượng" class="button buttonEdit rounded-circle btn-i-center"><i class="fa fa-edit" aria-hidden="true"></i></a>
+        <a  title="Cập nhật giá bán" class="button buttonEdit rounded-circle btn-i-center ml-2"><i class="fa fa-trash" aria-hidden="true"></i></a>
+    </div>
+</script>
+
 <script>
 
     $(function () {
@@ -47,7 +55,6 @@
             { OrderID: 22, OrderDate: "2019-05-16T12:00:00", Freight: 9.87, ShipCity: "Long Beach", ShipCountry: "USA" },
             { OrderID: 23, OrderDate: "2019-08-18T12:00:00", Freight: 24.13, ShipCity: "Singapore", ShipCountry: "Singapore" }
         ];
-        console.log(">>", orderData)
         var gridDataSource = new kendo.data.DataSource({
             data: orderData,
             schema: {
@@ -84,17 +91,11 @@
 
         $("#ordersGrid").kendoGrid({
             dataSource: gridDataSource,
-            dataBound: function (e) {
-                var grid = e.sender,
-                    chart = $("#ordersChart").data("kendoChart");
-
-                chart.dataSource.data(grid.dataSource.data());
-                grid.unbind("dataBound");
-            },
+           
             height: 400,
             pageable: true,
             sortable: true,
-            filterable: true,
+            filterable: false,
             columns: [{
                 field: "OrderID",
                 title: "Order ID",
@@ -114,6 +115,9 @@
             }, {
                 field: "ShipCity",
                 title: "Ship City"
+            }, {
+                template: kendo.template($("#status-template").html()),
+                width: 100,
             }]
         });
 
