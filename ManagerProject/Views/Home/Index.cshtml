@@ -9,6 +9,12 @@
             <span class="menu-title">ADD NEW CONTRIBUTION</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link"  href="@Url.Action("EmailNotification","Home")">
+            <i class="menu-icon typcn typcn-shopping-bag"></i>
+            <span class="menu-title">SEND EMAIL TEST</span>
+        </a>
+    </li>
 }
 
 <div id="ordersGrid"></div>
@@ -19,8 +25,8 @@
 
 <script id="status-template" type="text/x-kendo-template">
     <div class="d-flex w-100 text-center">
-        <a  title="Edit" class="button buttonEdit rounded-circle btn-i-center"><i class="fa fa-edit" aria-hidden="true"></i></a>
-        <a  title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2"><i class="fa fa-trash" aria-hidden="true"></i></a>
+        <a title="Edit" class="button buttonEdit rounded-circle btn-i-center"><i class="fa fa-edit" aria-hidden="true"></i></a>
+        <a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2"><i class="fa fa-trash" aria-hidden="true"></i></a>
     </div>
 </script>
 
@@ -91,7 +97,7 @@
 
         $("#ordersGrid").kendoGrid({
             dataSource: gridDataSource,
-           
+
             height: 400,
             pageable: true,
             sortable: true,
