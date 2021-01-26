@@ -572,6 +572,8 @@
     <Content Include="Areas\Manager\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Manager\Views\ManagerHome\Index.cshtml" />
     <Content Include="Areas\Manager\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutHome.cshtml" />
+    <Content Include="Areas\Manager\Views\Shared\_LayoutHome.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\fontawesome.min.js" />
     <Content Include="Scripts\Gsap.js" />
