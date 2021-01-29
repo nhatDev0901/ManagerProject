@@ -9757,8 +9757,16 @@ ul {
 .auth {
   min-height: 100vh; }
   .auth.auth-bg-1 {
-    background: url("../../images/auth/login_1.jpg");
+    background: url("../../images/auth/login_23.jpg");
     background-size: cover; }
+    .auth.auth-bg-admin {
+        background: url("../../images/auth/login_admin.jpg");
+        background-size: cover;
+    }
+    .auth.auth-bg-manage {
+        background: url("../../images/auth/login-manage.jpg");
+        background-size: cover;
+    }
   .auth.register-bg-1 {
     background: url("../../images/auth/register.jpg") center center no-repeat;
     background-size: cover; }
@@ -9840,5 +9848,7 @@ ul {
       border-left: 3px solid rgba(255, 255, 255, 0.2); } }
 
 /*-------------------------------------------------------------------*/
-
+.login-title{
+    text-align: center
+}
 /*# sourceMappingURL=style.css.map */

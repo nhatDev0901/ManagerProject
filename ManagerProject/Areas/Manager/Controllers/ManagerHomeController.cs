@@ -14,4 +14,4 @@ namespace ManagerProject.Areas.Manager.Controllers
             return View();
         }
     }
-}
+}   

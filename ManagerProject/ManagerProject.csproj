@@ -131,9 +131,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
+    <Compile Include="Areas\Manager\Controllers\LoginController.cs" />
     <Compile Include="Areas\Manager\Controllers\ManagerHomeController.cs" />
     <Compile Include="Areas\Manager\ManagerAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -144,8 +147,11 @@
     <Content Include="Content\assets\css\demo_1\style.css" />
     <Content Include="Content\assets\css\shared\style.css" />
     <Content Include="Content\assets\fonts\Roboto\LICENSE.txt" />
+    <Content Include="Content\assets\images\auth\login-manage.jpg" />
     <Content Include="Content\assets\images\auth\login_1.jpg" />
     <Content Include="Content\assets\images\auth\login_2.jpg" />
+    <Content Include="Content\assets\images\auth\login_23.jpg" />
+    <Content Include="Content\assets\images\auth\login_admin.jpg" />
     <Content Include="Content\assets\images\auth\register.jpg" />
     <Content Include="Content\assets\images\auth\register_2.jpg" />
     <Content Include="Content\assets\images\carousel\banner_1.jpg" />
@@ -575,6 +581,12 @@
     <Content Include="Areas\Manager\Views\web.config" />
     <Content Include="Areas\Admin\Views\Shared\_LayoutHome.cshtml" />
     <Content Include="Areas\Manager\Views\Shared\_LayoutHome.cshtml" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Login\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutAdminLogin.cshtml" />
+    <Content Include="Areas\Manager\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Manager\Views\Login\Index.cshtml" />
+    <Content Include="Areas\Manager\Views\Shared\_LayoutManageLogin.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\fontawesome.min.js" />
     <Content Include="Scripts\Gsap.js" />
@@ -607,6 +619,8 @@
     <Content Include="Views\Shared\_LibKendo.cshtml" />
     <Content Include="Views\Shared\_LayoutHome.cshtml" />
     <Content Include="Views\Home\_AddNew.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

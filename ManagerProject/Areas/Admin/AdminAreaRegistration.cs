@@ -21,7 +21,8 @@ namespace ManagerProject.Areas.Admin
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
-                new { action = "Index", Controller = "AdminHome", id = UrlParameter.Optional }
+                new { action = "Index", Controller = "Login", id = UrlParameter.Optional },
+                new[] { "ManagerProject.Areas.Admin.Controllers" }
             );
         }
     }
