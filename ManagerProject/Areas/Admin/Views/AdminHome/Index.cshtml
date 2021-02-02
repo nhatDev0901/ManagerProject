@@ -4,9 +4,9 @@
 }
 @section slider{
     <li class="nav-item">
-        <a class="nav-link" onclick='popupUpdatedQuantily()' href="javascript:void(0)">
+        <a class="nav-link" href="@Url.Action("index","Statistic")">
             <i class="menu-icon typcn typcn-shopping-bag"></i>
-            <span class="menu-title">ADD NEW CONTRIBUTION</span>
+            <span class="menu-title">STATISTICAL</span>
         </a>
     </li>
 }
@@ -16,11 +16,17 @@
 <div id="popupEdit">
     <div id="wndEdit"></div>
 </div>
+<div id="popupEditWindows">
+    <div id="wndEditContent"></div>
+</div>
+<div id="popupDeleteWindows">
+    <div id="wndDeleteContent"></div>
+</div>
 
 <script id="status-template" type="text/x-kendo-template">
     <div class="d-flex w-100 text-center">
-        <a title="Edit" class="button buttonEdit rounded-circle btn-i-center"><i class="fa fa-edit" aria-hidden="true"></i></a>
-        <a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2"><i class="fa fa-trash" aria-hidden="true"></i></a>
+        <a title="Edit" class="button buttonEdit rounded-circle btn-i-center" onclick="popupEdit()"><i class="fa fa-edit" aria-hidden="true"></i></a>
+        <a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2" onclick="popupDelete()"><i class="fa fa-trash" aria-hidden="true"></i></a>
     </div>
 </script>
 
@@ -92,32 +98,36 @@
         $("#ordersGrid").kendoGrid({
             dataSource: gridDataSource,
 
-            height: 400,
-            pageable: true,
+            height: 643,
+            pageable: {
+                refresh: false,
+                pageSizes: [10, 50, 100],
+            },
             sortable: true,
             filterable: false,
             columns: [{
                 field: "OrderID",
-                title: "Order ID",
+                title: "CODE",
                 width: 160
             }, {
                 field: "Freight",
                 width: 160,
-                template: "<span style='color:#= getFreightColor(Freight) #'>#= Freight #</span>"
-            }, {
-                field: "OrderDate",
-                title: "Order Date",
-                width: 200,
-                format: "{0:dd MMMM yyyy}"
+                title: "TITLE"
             }, {
                 field: "ShipCountry",
-                title: "Ship Country"
+                title: "CLASS CODE",
+                width: 200,
+
+            }, {
+                field: "OrderDate",
+                title: "CREATED DATE",
+                format: "{0:dd MMMM yyyy}"
             }, {
                 field: "ShipCity",
-                title: "Ship City"
-            }, {
-                template: kendo.template($("#status-template").html()),
-                width: 100,
+                title: "DESCRIPTION"
+                }, {
+                    template: kendo.template($("#status-template").html()),
+                    width: 100,
             }]
         });
 
@@ -134,18 +144,36 @@
     }
 
 
-    $("#popupEdit").kendoWindow({
-            title: "@Html.Raw("ADD NEW CONTRIBUTION")",
-            visible: false,
-            modal: true,
-            //maxHeight: 600,
-            width: 600,
-            draggable: true,
-            scrollable: true
+    $("#popupEditWindows").kendoWindow({
+        title: "@Html.Raw("EDIT")",
+        visible: false,
+        modal: true,
+        //maxHeight: 600,
+        width: 600,
+        draggable: true,
+        scrollable: true
+    });
+
+    $("#popupDeleteWindows").kendoWindow({
+        title: "@Html.Raw("DELETE CONTRIBUTION")",
+        visible: false,
+        modal: true,
+        //maxHeight: 600,
+        width: 500,
+        draggable: true,
+        scrollable: true
+    });
+
+    // pop up edit
+    function popupEdit() {
+        $('#wndEditContent').load("/Admin/AdminHome/EditContribution/", function () {
+            $("#popupEditWindows").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
         });
-    function popupUpdatedQuantily() {
-        $('#wndEdit').load("/Home/AddContribution/", function () {
-            $("#popupEdit").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
+    }
+    // popup delete
+    function popupDelete() {
+        $('#wndDeleteContent').load("/Admin/AdminHome/DeleteContribution/", function () {
+            $("#popupDeleteWindows").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
         });
     }
 </script>

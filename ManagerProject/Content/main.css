@@ -538,3 +538,30 @@ input.error, select.error, textarea.error, input.input-validation-error, select.
     margin-top:20px;
      
 }
+
+.tt-delete-plan {
+    font-size: 17px;
+    line-height: 21px;
+    text-align: center;
+    color: #000000;
+    padding-bottom: 30px;
+}
+
+.btn-save-contribution {
+    background-color: #E53935 !important;
+    color: #fff;
+}
+
+.btn-cannel-contribution {
+    background-color: #F3F2EC !important;
+    color: #fff;
+}
+
+.checkbox-policy{
+    text-align: end
+}
+
+.text-policy {
+    font-size: 10px;
+    font-style: italic
+}

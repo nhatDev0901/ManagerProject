@@ -4,7 +4,7 @@
 }
 @section slider{
     <li class="nav-item">
-        <a class="nav-link" onclick='popupUpdatedQuantily()' href="javascript:void(0)">
+        <a class="nav-link" onclick='popupAdd()' href="javascript:void(0)">
             <i class="menu-icon typcn typcn-shopping-bag"></i>
             <span class="menu-title">ADD NEW CONTRIBUTION</span>
         </a>
@@ -153,7 +153,7 @@
             draggable: true,
             scrollable: true
         });
-    function popupUpdatedQuantily() {
+    function popupAdd() {
         $('#wndEdit').load("/Home/AddContribution/", function () {
             $("#popupEdit").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
         });

@@ -13,5 +13,15 @@ namespace ManagerProject.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public ActionResult EditContribution()
+        {
+            return PartialView("_EditContribution");
+        }
+
+        public ActionResult DeleteContribution()
+        {
+            return PartialView("_DeleteContribution");
+        }
     }
 }

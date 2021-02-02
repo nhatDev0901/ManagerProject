@@ -132,6 +132,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StatisticController.cs" />
     <Compile Include="Areas\Manager\Controllers\LoginController.cs" />
     <Compile Include="Areas\Manager\Controllers\ManagerHomeController.cs" />
     <Compile Include="Areas\Manager\ManagerAreaRegistration.cs" />
@@ -485,6 +486,10 @@
     <Content Include="Content\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\font-awesome-4.7.0\HELP-US-OUT.txt" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\kendo\css\images\back.png" />
+    <Content Include="Content\kendo\css\images\kendoui.svg" />
+    <Content Include="Content\kendo\css\images\wp8_icons.png" />
+    <Content Include="Content\kendo\css\images\wp8_inverseicons.png" />
     <Content Include="Content\kendo\css\kendo.bootstrap-v4.min.css" />
     <Content Include="Content\kendo\css\kendo.mobile.all.min.css" />
     <Content Include="Content\kendo\script\angular.min.js" />
@@ -587,6 +592,11 @@
     <Content Include="Areas\Manager\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Manager\Views\Login\Index.cshtml" />
     <Content Include="Areas\Manager\Views\Shared\_LayoutManageLogin.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\_EditContribution.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\_DeleteContribution.cshtml" />
+    <Content Include="Areas\Admin\Views\Statistic\Index.cshtml" />
+    <Content Include="Content\kendo\css\images\kendoui.ttf" />
+    <Content Include="Content\kendo\css\images\kendoui.woff" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\fontawesome.min.js" />
     <Content Include="Scripts\Gsap.js" />

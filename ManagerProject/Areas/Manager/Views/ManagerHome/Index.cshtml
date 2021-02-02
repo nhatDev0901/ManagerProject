@@ -83,32 +83,34 @@
         $("#ordersGrid").kendoGrid({
             dataSource: gridDataSource,
 
-            height: 400,
+            height: 643,
             pageable: true,
             sortable: true,
             filterable: false,
-            columns: [{
+            columns: [
+            {
+                selectable: true,
+                width: "50px"
+            },
+            {
                 field: "OrderID",
-                title: "Order ID",
+                title: "CODE",
                 width: 160
             }, {
                 field: "Freight",
                 width: 160,
-                template: "<span style='color:#= getFreightColor(Freight) #'>#= Freight #</span>"
-            }, {
-                field: "OrderDate",
-                title: "Order Date",
-                width: 200,
-                format: "{0:dd MMMM yyyy}"
+                title: "TITLE"
             }, {
                 field: "ShipCountry",
-                title: "Ship Country"
+                title: "CLASS CODE",
+                width: 200            
+            }, {
+                field: "OrderDate",
+                title: "CREATED DATE",
+                format: "{0:dd MMMM yyyy}"
             }, {
                 field: "ShipCity",
-                title: "Ship City"
-            }, {
-                template: kendo.template($("#status-template").html()),
-                width: 100,
+                title: "DESCRIPTION"
             }]
         });
 
