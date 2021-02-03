@@ -13,5 +13,10 @@ namespace ManagerProject.Areas.Manager.Controllers
         {
             return View();
         }
+
+        public ActionResult ForgotPassword()
+        {
+            return PartialView("_ForgotPassword");
+        }
     }
 }

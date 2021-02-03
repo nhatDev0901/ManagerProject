@@ -7,6 +7,9 @@
 }
 
 <div id="ordersGrid"></div>
+<div style="padding-top: 20px; float: right">
+    <button type="button" id="btn-download" class="btn btn-danger btn-lg" disabled onclick="DownloadFile()">Download File</button>
+</div>
 
 <script id="status-template" type="text/x-kendo-template">
     <div class="d-flex w-100 text-center">
@@ -16,6 +19,7 @@
 </script>
 
 <script>
+    var arrSelect = [];
 
     $(function () {
 
@@ -87,6 +91,7 @@
             pageable: true,
             sortable: true,
             filterable: false,
+            change: onChange,
             columns: [
             {
                 selectable: true,
@@ -124,6 +129,28 @@
         } else {
             return "#00c";
         }
+    }
+
+    function onChange(e) {
+        arrSelect = [];
+        var rows = e.sender.select();
+        rows.each(function (e) {
+            var grid = $("#ordersGrid").data("kendoGrid");
+            var dataItem = grid.dataItem(this);
+            //console.log(dataItem.OrderID);
+            arrSelect.push(dataItem.OrderID);
+        })
+        console.log("Array>> ", arrSelect.length)
+
+        if (arrSelect.length > 0) {
+            $("#btn-download").removeAttr('disabled');
+        } else {
+            $("#btn-download").attr('disabled', true);
+        }
+    };
+
+    function DownloadFile() {
+        alert("Downloading " + arrSelect.length + " file.</br>" + arrSelect)
     }
 </script>
 

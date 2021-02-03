@@ -40,7 +40,7 @@
                         <div class="form-check form-check-flat mt-0">
 
                         </div>
-                        <a href="#" class="text-small forgot-password text-black">Forgot Password</a>
+                        <a href="javascript:void(0)" onclick="popupForgotPassword()" class="text-small forgot-password text-black">Forgot Password</a>
                     </div>
 
                 </form>
@@ -48,8 +48,28 @@
         </div>
     </div>
 
+    <div id="popupForgotPassword">
+        <div id="wndForgotPassword"></div>
+    </div>
+
     <script>
         $("#btn-login").click(function () {
             window.location = "/Home/Index";
         })
+
+        $("#popupForgotPassword").kendoWindow({
+            title: "@Html.Raw("FORGOT PASSWORD")",
+            visible: false,
+            modal: true,
+            //maxHeight: 600,
+            width: 600,
+            draggable: true,
+            scrollable: true
+        });
+
+        function popupForgotPassword() {
+            $('#wndForgotPassword').load("/Login/ForgotPassword/", function () {
+                $("#popupForgotPassword").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
+            });
+        }
     </script>
