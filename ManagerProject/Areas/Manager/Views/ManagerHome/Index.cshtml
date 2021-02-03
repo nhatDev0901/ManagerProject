@@ -70,25 +70,29 @@
             }
         });
 
-        function filterGrid(country) {
-            $("#ordersGrid").data("kendoGrid").dataSource.filter({
-                field: "ShipCountry",
-                operator: "eq",
-                value: country
-            });
-        }
-
-        $("#clearGridFilter").kendoButton({
-            click: function (e) {
-                $("#ordersGrid").data("kendoGrid").dataSource.filter({});
-            }
-        });
-
         $("#ordersGrid").kendoGrid({
-            dataSource: gridDataSource,
-
-            height: 643,
-            pageable: true,
+            dataSource: {
+                data: orderData,
+                schema: {
+                    model: {
+                        fields: {
+                            OrderID: { type: "number" },
+                            Freight: { type: "number" },
+                            OrderDate: { type: "date" },
+                            ShipCountry: { type: "string" },
+                            ShipCity: { type: "string" }
+                        }
+                    }
+                },
+                pageSize: 100,
+                sort: {
+                    field: "OrderDate",
+                    dir: "desc"
+                }
+            },
+            height: 770,
+            pageable: false,
+            scrollable: true,
             sortable: true,
             filterable: false,
             change: onChange,
@@ -120,16 +124,6 @@
         });
 
     });
-
-    function getFreightColor(freight) {
-        if (freight > 60) {
-            return "#090";
-        } else if (freight < 30) {
-            return "#f00";
-        } else {
-            return "#00c";
-        }
-    }
 
     function onChange(e) {
         arrSelect = [];
