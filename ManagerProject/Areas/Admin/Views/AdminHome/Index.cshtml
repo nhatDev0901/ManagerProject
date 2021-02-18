@@ -12,6 +12,10 @@
 }
 
 <div id="ordersGrid"></div>
+<div style="padding-top: 20px; float: right">
+    <button type="button" id="btn-download" class="btn btn-danger btn-lg" disabled onclick="SubmitFile()">Submit File</button>
+</div>
+
 
 <div id="popupEdit">
     <div id="wndEdit"></div>
@@ -31,7 +35,7 @@
 </script>
 
 <script>
-
+    var arrSelect1 = [];
     $(function () {
 
         $("#kendoVersion").text(kendo.version);
@@ -105,29 +109,35 @@
             },
             sortable: true,
             filterable: false,
-            columns: [{
+            change: onChange,
+            columns: [
+            {
+                selectable: true,
+                width: "50px"
+            },
+            {
                 field: "OrderID",
                 title: "CODE",
                 width: 160
-            }, {
+            },
+            {
                 field: "Freight",
                 width: 160,
                 title: "TITLE"
-            }, {
+            },
+            {
                 field: "ShipCountry",
                 title: "CLASS CODE",
                 width: 200,
-
-            }, {
+            },
+            {
                 field: "OrderDate",
                 title: "CREATED DATE",
                 format: "{0:dd MMMM yyyy}"
-            }, {
+            },
+            {
                 field: "ShipCity",
                 title: "DESCRIPTION"
-                }, {
-                    template: kendo.template($("#status-template").html()),
-                    width: 100,
             }]
         });
 
@@ -175,6 +185,28 @@
         $('#wndDeleteContent').load("/Admin/AdminHome/DeleteContribution/", function () {
             $("#popupDeleteWindows").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
         });
+    }
+
+    function onChange(e) {
+        arrSelect1 = [];
+        var rows = e.sender.select();
+        rows.each(function (e) {
+            var grid = $("#ordersGrid").data("kendoGrid");
+            var dataItem = grid.dataItem(this);
+            //console.log(dataItem.OrderID);
+            arrSelect1.push(dataItem.OrderID);
+        })
+        console.log("Array>> ", arrSelect1.length)
+
+        if (arrSelect1.length > 0) {
+            $("#btn-download").removeAttr('disabled');
+        } else {
+            $("#btn-download").attr('disabled', true);
+        }
+    };
+
+    function SubmitFile() {
+        alert("You submitted " + arrSelect1.length + " file.</br>" + arrSelect1)
     }
 </script>
 

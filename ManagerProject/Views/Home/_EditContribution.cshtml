@@ -1,0 +1,70 @@
+﻿
+<div class="modal-body">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <label>TITLE</label><span class="input-required">*</span>
+                </div>
+                <div class="col-lg-8 col-md-8">
+                    <input type="text" name="name" value="COURSE WORK  1" id="input-title" style="width: 100%;" />
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <label>DESCRIPTION</label><span class="input-required">*</span>
+                </div>
+                <div class="col-lg-8 col-md-8">
+                    <input type="text" name="name" value="MLEM MLEM MLEM MLEM MLEM MLEEMMMM" id="input-des" style="width: 100%;" />
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <label>UOLOAD FILES</label><span class="input-required">*</span>
+                </div>
+                <div class="col-lg-8 col-md-8">
+                    <input name="fileImage" multiple="multiple" id="files" type="file" aria-label="files" />
+                    @*@Html.TextBoxFor(x => x.File, new { @class = "form-control", type = "file" })*@<br />
+                    <span class="text-secondary font-italic">File format .jpeg, .jpg, .png., .doc. File size max 5MB.</span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+
+                </div>
+                <div class="col-lg-8 col-md-8">
+                    <button id="textButton" class="btn btn-success" style="width: 108px;height: 38px;">UPDATE</button>
+                </div>
+
+            </div>
+            <br />
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $("#input-title, #input-des").kendoTextBox({
+
+    });
+
+
+    $('input[name=fileImage]').kendoUpload({
+        async: {
+            saveUrl: "save",
+            removeUrl: "remove",
+            autoUpload: true
+        },
+        multiple: true,
+        validation: {
+            maxFileSize: 5000000,//Dung lượng file upload 5mb
+            allowedExtensions: [".jpeg", ".jpg", ".png", ".doc"],//Định dạng file
+        }
+    }).data("kendoUpload");
+</script>
+
+

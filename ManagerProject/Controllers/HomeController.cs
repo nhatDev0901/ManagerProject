@@ -75,5 +75,15 @@ namespace ManagerProject.Controllers
                 throw;
             }
         }
+
+        public ActionResult EditContribution()
+        {
+            return PartialView("_EditContribution");
+        }
+
+        public ActionResult DeleteContribution()
+        {
+            return PartialView("_DeleteContribution");
+        }
     }
 }

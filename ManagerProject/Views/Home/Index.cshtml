@@ -10,7 +10,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link"  href="@Url.Action("EmailNotification","Home")">
+        <a class="nav-link" href="@Url.Action("EmailNotification","Home")">
             <i class="menu-icon typcn typcn-shopping-bag"></i>
             <span class="menu-title">SEND EMAIL TEST</span>
         </a>
@@ -22,11 +22,17 @@
 <div id="popupEdit">
     <div id="wndEdit"></div>
 </div>
+<div id="popupEditWindows">
+    <div id="wndEditContent"></div>
+</div>
+<div id="popupDeleteWindows">
+    <div id="wndDeleteContent"></div>
+</div>
 
 <script id="status-template" type="text/x-kendo-template">
     <div class="d-flex w-100 text-center">
-        <a title="Edit" class="button buttonEdit rounded-circle btn-i-center"><i class="fa fa-edit" aria-hidden="true"></i></a>
-        <a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2"><i class="fa fa-trash" aria-hidden="true"></i></a>
+        <a title="Edit" class="button buttonEdit rounded-circle btn-i-center" onclick="popupEdit()"><i class="fa fa-edit" aria-hidden="true"></i></a>
+        <a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2" onclick="popupDelete()"><i class="fa fa-trash" aria-hidden="true"></i></a>
     </div>
 </script>
 
@@ -125,9 +131,9 @@
             }, {
                 field: "ShipCity",
                 title: "DESCRIPTION"
-                //}, {
-                //    template: kendo.template($("#status-template").html()),
-                //    width: 100,
+                }, {
+                    template: kendo.template($("#status-template").html()),
+                    width: 100,
             }]
         });
 
@@ -152,7 +158,41 @@
             width: 600,
             draggable: true,
             scrollable: true
+    });
+
+    $("#popupEditWindows").kendoWindow({
+        title: "@Html.Raw("EDIT")",
+        visible: false,
+        modal: true,
+        //maxHeight: 600,
+        width: 600,
+        draggable: true,
+        scrollable: true
+    });
+
+    $("#popupDeleteWindows").kendoWindow({
+        title: "@Html.Raw("DELETE CONTRIBUTION")",
+        visible: false,
+        modal: true,
+        //maxHeight: 600,
+        width: 500,
+        draggable: true,
+        scrollable: true
+    });
+
+    function popupEdit() {
+        $('#wndEditContent').load("/Home/EditContribution/", function () {
+            $("#popupEditWindows").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
         });
+    }
+    // popup delete
+    function popupDelete() {
+        $('#wndDeleteContent').load("/Home/DeleteContribution/", function () {
+            $("#popupDeleteWindows").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
+        });
+    }
+
+
     function popupAdd() {
         $('#wndEdit').load("/Home/AddContribution/", function () {
             $("#popupEdit").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
