@@ -31,7 +31,6 @@ namespace ManagerProject.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page. Như Khánh đã vào!";
-            ViewBag.Message = "Đcm da đen";
             return View();
         }
 

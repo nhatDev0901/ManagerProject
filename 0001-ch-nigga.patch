@@ -1,0 +1,28 @@
+From 253f2fae178560a43de2f2f0bd9830da0ea2866d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Nh=C6=B0=20Kh=C3=A1nh?= <khanhnngcs17542@fpt.edu.vn>
+Date: Sat, 23 Jan 2021 17:35:53 +0700
+Subject: [PATCH] =?UTF-8?q?ch=E1=BB=9D=20nigga?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ ManagerProject/Controllers/HomeController.cs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ManagerProject/Controllers/HomeController.cs b/ManagerProject/Controllers/HomeController.cs
+index c4632a5..442b1fa 100644
+--- a/ManagerProject/Controllers/HomeController.cs
++++ b/ManagerProject/Controllers/HomeController.cs
+@@ -26,7 +26,7 @@ namespace ManagerProject.Controllers
+         public ActionResult Contact()
+         {
+             ViewBag.Message = "Your contact page. Như Khánh đã vào!";
+-
++            ViewBag.Message = "Đcm da đen";
+             return View();
+         }
+     }
+-- 
+2.17.1.windows.2
+
