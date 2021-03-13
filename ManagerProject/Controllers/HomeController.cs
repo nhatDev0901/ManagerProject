@@ -96,7 +96,7 @@ namespace ManagerProject.Controllers
                 Sub_Title = x.Sub_Title,
                 Department_ID = x.Com_ID,
                 Description = x.Sub_Description,
-                Created_Date = DateTime.Now
+                Created_Date = x.Created_Date.ToString()
             }).ToList();
             return Json(res, JsonRequestBehavior.AllowGet);
         }

@@ -12,6 +12,7 @@ namespace ModelEF.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public USER()
         {
+            COMMENTS = new HashSet<COMMENT>();
             SUBMITTIONS = new HashSet<SUBMITTION>();
             SUBMITTIONS1 = new HashSet<SUBMITTION>();
         }
@@ -28,6 +29,9 @@ namespace ModelEF.EF
         public int? Dep_ID { get; set; }
 
         public int? Role_ID { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<COMMENT> COMMENTS { get; set; }
 
         public virtual DEPARTMENT DEPARTMENT { get; set; }
 

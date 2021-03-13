@@ -11,6 +11,6 @@ namespace ManagerProject.Models
         public string Sub_Title { get; set; }
         public int? Department_ID { get; set; }
         public string Description { get; set; } 
-        public DateTime? Created_Date { get; set; } 
+        public string Created_Date { get; set; } 
     }
 }
