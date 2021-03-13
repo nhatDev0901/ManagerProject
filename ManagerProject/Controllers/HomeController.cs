@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ManagerProject.Models;
+using ModelEF.DataAccess;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -56,7 +58,7 @@ namespace ManagerProject.Controllers
                 message.Body = string.Format(body, "nhat", "nhat", "nhat");
                 message.IsBodyHtml = true;
 
-                using (var smtp = new SmtpClient())
+                using (var smtp = new SmtpClient())                                                     
                 {
                     smtp.Host = ConfigurationManager.AppSettings["HOST"].ToString();
                     smtp.Port = Convert.ToInt32(ConfigurationManager.AppSettings["PORT"].ToString());
@@ -83,6 +85,20 @@ namespace ManagerProject.Controllers
         public ActionResult DeleteContribution()
         {
             return PartialView("_DeleteContribution");
+        }
+
+        public ActionResult GetAllPost()
+        {
+            var list = new PostDataAccess().GetAllPost();
+            var res = list.Select(x => new SubmittionModel()
+            {
+                Sub_ID = x.Sub_ID,
+                Sub_Title = x.Sub_Title,
+                Department_ID = x.Com_ID,
+                Description = x.Sub_Description,
+                Created_Date = DateTime.Now
+            }).ToList();
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
     }
 }

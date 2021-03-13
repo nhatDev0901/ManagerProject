@@ -112,7 +112,7 @@
             }, {
                 field: "ShipCountry",
                 title: "CLASS CODE",
-                width: 200            
+                width: 200
             }, {
                 field: "OrderDate",
                 title: "CREATED DATE",
@@ -144,7 +144,14 @@
     };
 
     function DownloadFile() {
-        alert("Downloading " + arrSelect.length + " file.</br>" + arrSelect)
+        $.ajax({
+            url: '@Url.Action("DownloadZipFiles", "ManagerHome")',
+            dataType: "json",
+            success: function (result) {
+                alert("Downloading " + arrSelect.length + " file.</br>" + arrSelect)
+            }
+        });
+        
     }
 </script>
 

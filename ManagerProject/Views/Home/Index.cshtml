@@ -68,28 +68,43 @@
             { OrderID: 23, OrderDate: "2019-08-18T12:00:00", Freight: 24.13, ShipCity: "Singapore", ShipCountry: "Singapore" }
         ];
         var gridDataSource = new kendo.data.DataSource({
-            data: orderData,
+            //data: orderData,
+            transport: {
+                read: function (options) {
+                    $.ajax({
+                        url: '@Url.Action("GetAllPost", "Home")',
+                        dataType: "json", 
+                        success: function (result) {
+                            options.success(result);
+                            console.log("data>>", result)
+                        },
+                        error: function (result) {
+                            options.error(result);
+                        }
+                    });
+                }
+            },
             schema: {
                 model: {
                     fields: {
-                        OrderID: { type: "number" },
-                        Freight: { type: "number" },
-                        OrderDate: { type: "date" },
-                        ShipCountry: { type: "string" },
-                        ShipCity: { type: "string" }
+                        Sub_ID: { type: "number" },
+                        Sub_Title: { type: "string" },
+                        Description: { type: "string" },
+                        Department_ID: { type: "number" },
+                        //Created_Date: { type: "datetime" }
                     }
                 }
             },
             pageSize: 10,
             sort: {
-                field: "OrderDate",
+                field: "Created_Date",
                 dir: "desc"
             }
         });
 
         function filterGrid(country) {
             $("#ordersGrid").data("kendoGrid").dataSource.filter({
-                field: "ShipCountry",
+                field: "Sub_Title",
                 operator: "eq",
                 value: country
             });
@@ -112,24 +127,24 @@
             sortable: true,
             filterable: false,
             columns: [{
-                field: "OrderID",
-                title: "CODE",
+                field: "Sub_ID",
+                title: "ID",
                 width: 160
             }, {
-                field: "Freight",
+                field: "Sub_Title",
                 width: 160,
-                    title: "TITLE"
+                title: "TITLE"
             }, {
-                field: "ShipCountry",
+                field: "Department_ID",
                 title: "CLASS CODE",
                 width: 200,
 
             }, {
-                field: "OrderDate",
+                field: "Created_Date",
                 title: "CREATED DATE",
                 format: "{0:dd MMMM yyyy}"
             }, {
-                field: "ShipCity",
+                field: "Description",
                 title: "DESCRIPTION"
                 }, {
                     template: kendo.template($("#status-template").html()),
