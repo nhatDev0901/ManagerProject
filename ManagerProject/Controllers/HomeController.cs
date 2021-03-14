@@ -1,5 +1,6 @@
 ﻿using ManagerProject.Models;
 using ModelEF.DataAccess;
+using ModelEF.EF;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,6 +15,7 @@ namespace ManagerProject.Controllers
 {
     public class HomeController : Controller
     {
+        private PostDataAccess dataAccess = new PostDataAccess();
         public ActionResult Index()
         {
             return View();
@@ -41,6 +43,48 @@ namespace ManagerProject.Controllers
             return PartialView("_AddNew");
         }
 
+        public ActionResult AddSubmittion(ParamInputCreateModel param)
+        {
+            var newSubmitID = dataAccess.CreateIDAuto("SM");
+            var userInfo = dataAccess.GetUserInfoByID(2); // muc dich lay thong tin user đang đăng nhập
+            int resCode;
+            // lưu submittion
+            var inforSubmit = new SUBMITTION()
+            {
+                Sub_Title = param.title,
+                Sub_Description = param.description,
+                Created_Date = DateTime.Now,
+                Sub_Code = newSubmitID,
+                Created_By = userInfo.User_ID
+            };
+            resCode = dataAccess.AddSubmits(inforSubmit);
+
+            // lưu file của submitton
+            if (param.files.Count() > 0)
+            {
+                string path = Server.MapPath("~/Uploads/FilesSubmitted/");
+                foreach (var item in param.files)
+                {
+                    if (item != null)
+                    {
+                        var files = new FILE();
+                        string fileName = string.Format("{0}_{1}_{2}{3}", userInfo.Username, newSubmitID, DateTime.Now.Ticks.ToString(), System.IO.Path.GetExtension(item.FileName));
+
+                        files.File_Name = item.FileName;
+                        files.File_Path = fileName;
+                        files.Sub_Code = newSubmitID;
+
+                        // lưu file vào folder
+                        
+                        item.SaveAs(path + fileName);
+                        resCode = dataAccess.InsertFile(files);
+
+                    }
+                }
+            }
+            
+            return Json(resCode, JsonRequestBehavior.AllowGet);
+        }
         public async Task<ActionResult> EmailNotification()
         {          
             try
@@ -79,6 +123,7 @@ namespace ManagerProject.Controllers
 
         public ActionResult EditContribution()
         {
+
             return PartialView("_EditContribution");
         }
 
@@ -87,14 +132,16 @@ namespace ManagerProject.Controllers
             return PartialView("_DeleteContribution");
         }
 
-        public ActionResult GetAllPost()
+        public ActionResult GetAllPostOfStudent()
         {
-            var list = new PostDataAccess().GetAllPost();
+            var userInfo = dataAccess.GetUserInfoByID(2);
+            var list = new PostDataAccess().GetAllPostByUser(2); // hard code
             var res = list.Select(x => new SubmittionModel()
             {
                 Sub_ID = x.Sub_ID,
                 Sub_Title = x.Sub_Title,
-                Department_ID = x.Com_ID,
+                Department_ID = userInfo.DEPARTMENT.Dep_ID,
+                Department_Name = userInfo.DEPARTMENT.Dep_Name,
                 Description = x.Sub_Description,
                 Created_Date = x.Created_Date.ToString()
             }).ToList();

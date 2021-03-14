@@ -655,6 +655,7 @@
     <Folder Include="Areas\Manager\Data\" />
     <Folder Include="Areas\Manager\Models\" />
     <Folder Include="Areas\Manager\ViewModels\" />
+    <Folder Include="Uploads\FilesSubmitted\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

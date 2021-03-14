@@ -21,10 +21,6 @@ namespace ModelEF.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FILE>()
-                .Property(e => e.File_Path)
-                .IsUnicode(false);
-
             modelBuilder.Entity<ROLE>()
                 .Property(e => e.Role_Name)
                 .IsUnicode(false);
@@ -37,7 +33,7 @@ namespace ModelEF.EF
             modelBuilder.Entity<USER>()
                 .HasMany(e => e.SUBMITTIONS1)
                 .WithOptional(e => e.USER1)
-                .HasForeignKey(e => e.Update_By);
+                .HasForeignKey(e => e.Updated_By);
         }
     }
 }

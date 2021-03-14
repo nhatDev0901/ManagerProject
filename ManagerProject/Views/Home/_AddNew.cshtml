@@ -46,7 +46,7 @@
 
                 </div>
                 <div class="col-lg-8 col-md-8">
-                    <button id="btn-add" class="btn btn-success" style="width: 108px;height: 38px; background-color: #8A9A5F" disabled>Button</button>
+                    <button id="btn-add" class="btn btn-success" onclick="AddNewSubmittion()" style="width: 108px;height: 38px; background-color: #8A9A5F" disabled>Button</button>
                 </div>
 
             </div>
@@ -59,20 +59,20 @@
 
 <script>
     $("#input-title, #input-des").kendoTextBox({
-       
+
     });
 
 
     $('input[name=fileImage]').kendoUpload({
-        async: {
-            saveUrl: "save",
-            removeUrl: "remove",
-            autoUpload: true
-        },
+        //async: {
+        //    saveUrl: "save",
+        //    removeUrl: "remove",
+        //    autoUpload: true
+        //},
         multiple: true,
         validation: {
             maxFileSize: 5000000,//Dung lượng file upload 5mb
-            allowedExtensions: [".jpeg", ".jpg", ".png", ".doc"],//Định dạng file
+            allowedExtensions: [".jpeg", ".jpg", ".png", ".doc", "docx"],//Định dạng file
         }
     }).data("kendoUpload");
 
@@ -83,4 +83,37 @@
             $('#btn-add').attr("disabled", true);
         }
     })
+
+    function AddNewSubmittion() {
+        var formData = new FormData();
+
+        formData.append("title", $("#input-title").data("kendoTextBox").value());
+        formData.append("description", $("#input-des").data("kendoTextBox").value());
+        var files = [];
+        var lengthItem = $('input[name=fileImage]').length;
+        for (var j = 0; j < lengthItem; j++) {
+            var length = $('input[name=fileImage]').get(j).files.length;
+            for (var i = 0; i < length; i++) {
+                files.push($('input[name=fileImage]').get(j).files[i]);
+            }
+        }   
+        var lengthfiles = files.length;
+        for (var i = 0; i < lengthfiles; i++) {
+            formData.append('files', files[i]);
+        }
+
+        $.ajax({
+            url: '@Url.Action("AddSubmittion", "Home")',
+            type: "POST",
+            dataType: "json",
+            enctype: 'multipart/form-data',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (result) {
+                console.log("data>>", result)
+            }
+        });
+
+    }
 </script>
