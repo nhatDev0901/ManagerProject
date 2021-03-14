@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManagerProject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -33,8 +34,18 @@ namespace ManagerProject.Controllers
         }*/
         // GET: Login
         public ActionResult Index()
-        {
+        {          
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(LoginModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                int res = 0;
+            }
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ForgotPassword()

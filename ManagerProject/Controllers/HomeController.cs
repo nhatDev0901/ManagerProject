@@ -43,7 +43,7 @@ namespace ManagerProject.Controllers
             return PartialView("_AddNew");
         }
 
-        public ActionResult AddSubmittion(ParamInputCreateModel param)
+        public async Task<ActionResult> AddSubmittion(ParamInputCreateModel param)
         {
             var newSubmitID = dataAccess.CreateIDAuto("SM");
             var userInfo = dataAccess.GetUserInfoByID(2); // muc dich lay thong tin user đang đăng nhập
@@ -82,7 +82,11 @@ namespace ManagerProject.Controllers
                     }
                 }
             }
-            
+
+            if (resCode == 1)
+            {
+                Task.Run(() => Helper.SendMail.SendEmailWhenAddNewSubmittion(userInfo.User_ID.ToString(), userInfo.Username, userInfo.DEPARTMENT.Dep_Name, userInfo.Email, param.title, param.files.Count())) ;
+            }
             return Json(resCode, JsonRequestBehavior.AllowGet);
         }
         public async Task<ActionResult> EmailNotification()

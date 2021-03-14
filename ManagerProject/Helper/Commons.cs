@@ -5,8 +5,10 @@ using System.Web;
 
 namespace ManagerProject.Helper
 {
-    public class Commons
+    public static class Commons
     {
-
+        public static string USER_SEESION = "USER_SEESION";
+        public static string SESSION_CREDENTIALS = "SESSION_CREDENTIALS";
+        public static string CODE_SESSION = "CODE_SESSION";
     }
 }

@@ -14,7 +14,7 @@
                     <div class="form-group">
                         <label class="label">Username</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Username">
+                            <input type="text" class="form-control" placeholder="Username" id="user_name">
                             <div class="input-group-append">
                                 <span class="input-group-text">
                                     <i class="mdi mdi-check-circle-outline"></i>
@@ -25,7 +25,7 @@
                     <div class="form-group">
                         <label class="label">Password</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" placeholder="*********">
+                            <input type="password" class="form-control" id="password" placeholder="*********">
                             <div class="input-group-append">
                                 <span class="input-group-text">
                                     <i class="mdi mdi-check-circle-outline"></i>
@@ -54,7 +54,23 @@
 
     <script>
         $("#btn-login").click(function () {
-            window.location = "/Home/Index";
+            var username = $("#user_name").val();
+            var pass = document.getElementById("password").value;
+            var formData = new FormData();
+            formData.append("UserName", username);
+            formData.append("Password", pass);
+            $.ajax({
+                url: '@Url.Action("Login", "Login")',
+                type: "POST",
+                dataType: "json",
+                enctype: 'multipart/form-data',
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (result) {
+                    console.log("data>>", result)
+                }
+            });
         })
 
         $("#popupForgotPassword").kendoWindow({

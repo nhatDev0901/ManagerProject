@@ -149,6 +149,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\Commons.cs" />
+    <Compile Include="Helper\SendMail.cs" />
+    <Compile Include="Helper\ViewText.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ViewText.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\SubmittionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -678,6 +685,12 @@
       <Project>{6B5E9804-5A20-41D9-9A0F-FFEE957A3733}</Project>
       <Name>ModelEF</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Helper\ViewText.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ViewText.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
