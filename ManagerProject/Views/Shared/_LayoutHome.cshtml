@@ -127,7 +127,7 @@
                         </div>
                         <div class="text-wrapper">
                             <p class="profile-name">@Html.Raw(userSession.Username)</p>
-                            <p class="designation">Student</p>
+                            <p class="designation">@Html.Raw(userSession.Role.ToUpper())</p>
                         </div>
                     </a>
                 </li>

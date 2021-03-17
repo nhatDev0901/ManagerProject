@@ -14,7 +14,7 @@
                 <div class="form-group">
                     <label class="label">Username</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Username">
+                        <input type="text" class="form-control" placeholder="Username" id="username-admin">
                         <div class="input-group-append">
                             <span class="input-group-text">
                                 <i class="mdi mdi-check-circle-outline"></i>
@@ -25,7 +25,7 @@
                 <div class="form-group">
                     <label class="label">Password</label>
                     <div class="input-group">
-                        <input type="password" class="form-control" placeholder="*********">
+                        <input type="password" class="form-control" placeholder="*********" id="password-admin">
                         <div class="input-group-append">
                             <span class="input-group-text">
                                 <i class="mdi mdi-check-circle-outline"></i>
@@ -51,26 +51,74 @@
 <div id="popupForgotPassword">
     <div id="wndForgotPassword"></div>
 </div>
-
+<div id="dialog-admin"></div>
 <script>
-        $("#btn-Adminlogin").click(function () {
-            window.location = "/Admin/AdminHome/Index";
-        })
+    $("#btn-Adminlogin").click(function () {
+        var username = $("#username-admin").val();
+        var pass = document.getElementById("password-admin").value;
+        var formData = new FormData();
+        formData.append("UserName", username);
+        formData.append("Password", pass);
+        $.ajax({
+            url: '@Url.Action("LoginAdmin", "Login")',
+            type: "POST",
+            dataType: "json",
+            enctype: 'multipart/form-data',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (res) {
+                console.log("data>>", res)
+                if (res == 0) {
+                    initDialog("Notification", "Account not exists!", "Close");
+                }
+                if (res == -1) {
+                    initDialog("Notification", "Username / Password is not correct", "Close");
+                }
+                if (res == -2) {
+                    initDialog("Notification", "Loggin not success! System error.", "Close");
+                }
+                if (res == -3) {
+                    initDialog("Notification", "Account dose not access to page. Not permission.", "Close");
+                }
+                if (res == 1) {
+                    window.location.href = "@Url.Action("Index", "AdminHome")";
+                }
+
+            }
+        });
+    })
+
+    function initDialog(title, content, contentBtnCancel = '') {
+
+        $('#dialog-admin').kendoDialog({
+            width: "450px",
+            title: title,
+            closable: false,
+            visible: false,
+            content: " <span class='k-icon k-i-info'></span>" + content,
+            buttonLayout: "normal",
+            actions: [
+                { text: contentBtnCancel },
+            ]
+        });
+        $('#dialog-admin').data("kendoDialog").open().element.closest(".k-window").css({ top: 40 });
+    }
 
     $("#popupForgotPassword").kendoWindow({
-            title: "@Html.Raw("FORGOT PASSWORD")",
-            visible: false,
-            modal: true,
-            //maxHeight: 600,
-            width: 600,
-            draggable: true,
-            scrollable: true
-        });
+        title: "@Html.Raw("FORGOT PASSWORD")",
+        visible: false,
+        modal: true,
+        //maxHeight: 600,
+        width: 600,
+        draggable: true,
+        scrollable: true
+    });
 
-        function popupForgotPassword() {
-            $('#wndForgotPassword').load("/Login/ForgotPassword/", function () {
-                $("#popupForgotPassword").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
-            });
-        }
+    function popupForgotPassword() {
+        $('#wndForgotPassword').load("/Login/ForgotPassword/", function () {
+            $("#popupForgotPassword").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
+        });
+    }
 </script>
 

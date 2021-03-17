@@ -10,18 +10,22 @@
 }
 
 @section slider{
-    <li class="nav-item">
-        <a class="nav-link" onclick='popupAdd()' href="javascript:void(0)">
-            <i class="menu-icon typcn typcn-shopping-bag"></i>
-            <span class="menu-title">ADD NEW CONTRIBUTION</span>
-        </a>
-    </li>
+    @if (userSession.RoleID == 1)
+    {
+        <li class="nav-item">
+            <a class="nav-link" onclick='popupAdd()' href="javascript:void(0)">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">ADD NEW CONTRIBUTION</span>
+            </a>
+        </li>
+    }
+
     @*<li class="nav-item">
-        <a class="nav-link" href="@Url.Action("EmailNotification","Home")">
-            <i class="menu-icon typcn typcn-shopping-bag"></i>
-            <span class="menu-title">SEND EMAIL TEST</span>
-        </a>
-    </li>*@
+            <a class="nav-link" href="@Url.Action("EmailNotification","Home")">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">SEND EMAIL TEST</span>
+            </a>
+        </li>*@
 }
 
 <div id="ordersGrid"></div>
