@@ -7,7 +7,7 @@
                     <label>TITLE</label><span class="input-required">*</span>
                 </div>
                 <div class="col-lg-8 col-md-8">
-                    <input type="text" name="name" value="" id="input-title" style="width: 100%;" />
+                    <input type="text" name="name" value="" id="input-title" required style="width: 100%;" />
                 </div>
             </div>
             <br />
@@ -16,7 +16,8 @@
                     <label>DESCRIPTION</label><span class="input-required">*</span>
                 </div>
                 <div class="col-lg-8 col-md-8">
-                    <input type="text" name="name" value="" id="input-des" style="width: 100%;" />
+                    @*<input type="text" name="name" value="" id="input-des" required style="width: 100%;" />*@
+                    <textarea id="input-des" required style="width: 100%;"></textarea>
                 </div>
             </div>
             <br />
@@ -58,23 +59,46 @@
 </div>
 
 <script>
-    $("#input-title, #input-des").kendoTextBox({
+    $("#input-title").kendoTextBox({
 
     });
 
+    $("#input-des").kendoEditor({
+        tools: []
+    });
+    var editor = $("#input-des").data("kendoEditor");
+
+
+    $("#btn-add").attr("disabled", true);
 
     $('input[name=fileImage]').kendoUpload({
-        //async: {
-        //    saveUrl: "save",
-        //    removeUrl: "remove",
-        //    autoUpload: true
-        //},
+        async: {
+            saveUrl: "save",
+            removeUrl: "remove",
+            autoUpload: true
+        },
         multiple: true,
         validation: {
             maxFileSize: 5000000,//Dung lượng file upload 5mb
-            allowedExtensions: [".jpeg", ".jpg", ".png", ".doc", "docx"],//Định dạng file
-        }
+            allowedExtensions: [".jpeg", ".jpg", ".png", ".doc", ".docx"],//Định dạng file
+        },
+        select: onCheckFile
     }).data("kendoUpload");
+
+    function onCheckFile(e) {
+        var files = e.files;
+        const acceptFiles = [".jpeg", ".jpg", ".png", ".doc", ".docx"]
+        $.each(files, function () {
+            if (acceptFiles.indexOf(this.extension.toLowerCase()) == -1) {
+                e.preventDefault();
+            }
+            if (files.length == 0) {
+                $("#btn-add").attr("disabled", true);
+            } else {
+                $("#btn-add").removeAttr("disabled");
+            }
+        });
+    }
 
     $("#ckb-policy-accept").click(function () {
         if ($(this).is(':checked')) {
@@ -86,15 +110,17 @@
 
     function AddNewSubmittion() {
         var formData = new FormData();
-
+        const acceptFiles = ["jpeg", "jpg", "png", "doc", "docx"]
         formData.append("title", $("#input-title").data("kendoTextBox").value());
-        formData.append("description", $("#input-des").data("kendoTextBox").value());
+        formData.append("description", $("#input-des").val());
         var files = [];
         var lengthItem = $('input[name=fileImage]').length;
         for (var j = 0; j < lengthItem; j++) {
             var length = $('input[name=fileImage]').get(j).files.length;
             for (var i = 0; i < length; i++) {
-                files.push($('input[name=fileImage]').get(j).files[i]);
+                if (acceptFiles.indexOf($('input[name=fileImage]').get(j).files[i].name.split('.').pop().toLowerCase()) != -1) {
+                    files.push($('input[name=fileImage]').get(j).files[i]);
+                }
             }
         }   
         var lengthfiles = files.length;

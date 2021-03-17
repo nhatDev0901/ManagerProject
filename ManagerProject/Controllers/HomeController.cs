@@ -4,6 +4,8 @@ using ModelEF.EF;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
+//using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -18,9 +20,14 @@ namespace ManagerProject.Controllers
         private PostDataAccess dataAccess = new PostDataAccess();
         public ActionResult Index()
         {
+            if (Session[Helper.Commons.USER_SEESION] == null)
+            {
+                return Redirect("/");
+            }
             return View();
         }
 
+        
         public ActionResult About()
         {
             ViewBag.Message = "Your application descrjhbjhbhjbhjiptdddiodsdsdsdsdn jljljjpage.";
@@ -43,49 +50,55 @@ namespace ManagerProject.Controllers
             return PartialView("_AddNew");
         }
 
-        public async Task<ActionResult> AddSubmittion(ParamInputCreateModel param)
+        public ActionResult AddSubmittion(ParamInputCreateModel param)
         {
-            var newSubmitID = dataAccess.CreateIDAuto("SM");
-            var userInfo = dataAccess.GetUserInfoByID(2); // muc dich lay thong tin user đang đăng nhập
-            int resCode;
-            // lưu submittion
-            var inforSubmit = new SUBMITTION()
+            int resCode = 0;
+            try
             {
-                Sub_Title = param.title,
-                Sub_Description = param.description,
-                Created_Date = DateTime.Now,
-                Sub_Code = newSubmitID,
-                Created_By = userInfo.User_ID
-            };
-            resCode = dataAccess.AddSubmits(inforSubmit);
-
-            // lưu file của submitton
-            if (param.files.Count() > 0)
-            {
-                string path = Server.MapPath("~/Uploads/FilesSubmitted/");
-                foreach (var item in param.files)
+                var newSubmitID = dataAccess.CreateIDAuto("SM");
+                var userInfo = dataAccess.GetUserInfoByID(2); // muc dich lay thong tin user đang đăng nhập
+               
+                param.description = HttpUtility.HtmlDecode(RemoveHtmlTag(HttpUtility.HtmlDecode(param.description).Replace("<br />", "\n").Replace("</li>", "\n").Replace("&nbsp;", "")));
+                // lưu submittion
+                var inforSubmit = new SUBMITTION()
                 {
-                    if (item != null)
+                    Sub_Title = param.title,
+                    Sub_Description = param.description,
+                    Created_Date = DateTime.Now,
+                    Sub_Code = newSubmitID,
+                    Created_By = userInfo.User_ID
+                };
+                var newID = dataAccess.AddSubmits(inforSubmit);               
+                // lưu file của submitton
+                if (param.files.Count() > 0)
+                {
+                    string path = Server.MapPath("~/Uploads/FilesSubmitted/");
+                    foreach (var item in param.files)
                     {
-                        var files = new FILE();
-                        string fileName = string.Format("{0}_{1}_{2}{3}", userInfo.Username, newSubmitID, DateTime.Now.Ticks.ToString(), System.IO.Path.GetExtension(item.FileName));
+                        if (item != null)
+                        {
+                            var files = new FILE();
+                            string fileName = string.Format("{0}_{1}_{2}{3}", userInfo.Username, newSubmitID, DateTime.Now.Ticks.ToString(), System.IO.Path.GetExtension(item.FileName));
 
-                        files.File_Name = item.FileName;
-                        files.File_Path = fileName;
-                        files.Sub_Code = newSubmitID;
+                            files.File_Name = item.FileName;
+                            files.File_Path = fileName;
+                            files.Sub_Code = newSubmitID;
+                            files.Sub_ID = newID;
+                            // lưu file vào folder
+                            item.SaveAs(path + fileName);
+                            var insertFile = dataAccess.InsertFile(files);
 
-                        // lưu file vào folder
-                        
-                        item.SaveAs(path + fileName);
-                        resCode = dataAccess.InsertFile(files);
-
+                        }
                     }
                 }
-            }
+                Task.Run(() => Helper.SendMail.SendEmailWhenAddNewSubmittion(userInfo.User_ID.ToString(), userInfo.Username, userInfo.DEPARTMENT.Dep_Name, userInfo.Email, param.title, param.files.Count()));
 
-            if (resCode == 1)
+                resCode = 1;
+            }
+            catch (Exception)
             {
-                Task.Run(() => Helper.SendMail.SendEmailWhenAddNewSubmittion(userInfo.User_ID.ToString(), userInfo.Username, userInfo.DEPARTMENT.Dep_Name, userInfo.Email, param.title, param.files.Count())) ;
+                resCode = -1;
+                throw;
             }
             return Json(resCode, JsonRequestBehavior.AllowGet);
         }
@@ -125,17 +138,94 @@ namespace ManagerProject.Controllers
             }
         }
 
-        public ActionResult EditContribution()
-        {
-
+        public ActionResult EditContribution(int Subid)
+        {            
+            var data = dataAccess.GetSubmittionByID(Subid);
+            var model = new SubmittionModel()
+            {
+                Sub_ID = data.Sub_ID,
+                Sub_Title = data.Sub_Title,
+                Description = data.Sub_Description,
+                SubCode = data.Sub_Code
+            };
+            ViewBag.SubmissionInfo = model;
             return PartialView("_EditContribution");
         }
 
-        public ActionResult DeleteContribution()
+        public ActionResult EditSubmission(ParamInputCreateModel param)
         {
+            int res = 0;
+            var userInfor = (UserLoginModel)Session[Helper.Commons.USER_SEESION];
+            var subInfor = dataAccess.GetSubmittionByID(param.Sub_ID);
+            param.description = HttpUtility.HtmlDecode(RemoveHtmlTag(HttpUtility.HtmlDecode(param.description).Replace("<br />", "\n").Replace("</li>", "\n").Replace("&nbsp;", "")));  
+            var inforSubmit = new SUBMITTION()
+            {
+                Sub_ID = param.Sub_ID,
+                Sub_Title = param.title,
+                Sub_Description = param.description,
+                Updated_Date = DateTime.Now,
+                Updated_By = userInfor.UserID
+            };
+            res = dataAccess.EditSubmission(inforSubmit);
+            var listOwnFile = dataAccess.GetFilesBySubCode(param.SubCode);
+
+            if (param.files.Count() > 0)  // if student has file change
+            {
+                // xoa file cũ trong Folder va DB
+                var rootFolder = Server.MapPath("~/Uploads/FilesSubmitted/");
+                foreach (var item in listOwnFile)
+                {
+                    if (System.IO.File.Exists(Path.Combine(rootFolder, item.File_Path)))
+                    {
+                        System.IO.File.Delete(Path.Combine(rootFolder, item.File_Path));
+                    }
+
+                    var delete = dataAccess.DeleteFile(item.File_ID);
+                }
+                // edit file in DbContext and save new file
+                foreach (var item in param.files)
+                {
+                    var newFile = new FILE();
+                    string filename = string.Format("{0}_{1}_{2}{3}", userInfor.Username, param.SubCode, DateTime.Now.Ticks.ToString(), System.IO.Path.GetExtension(item.FileName));
+
+                    newFile.Sub_ID = param.Sub_ID;
+                    newFile.Sub_Code = param.SubCode;
+                    newFile.File_Name = item.FileName;
+                    newFile.File_Path = filename;
+
+                    item.SaveAs(rootFolder + filename);
+                    res = dataAccess.InsertFile(newFile);
+                }
+            }
+
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DeleteContribution(int Subid, string title)
+        {
+            ViewBag.SubID = Subid;
+            ViewBag.Title = title;
             return PartialView("_DeleteContribution");
         }
 
+        public ActionResult DeleteSubmission(int id)
+        {
+            var listOwnFile = dataAccess.GetFilesBySubID(id);
+            if (listOwnFile.Count() > 0)
+            {
+                var rootFolder = Server.MapPath("~/Uploads/FilesSubmitted/");
+                foreach (var item in listOwnFile)
+                {
+                    if (System.IO.File.Exists(Path.Combine(rootFolder, item.File_Path)))
+                    {
+                        System.IO.File.Delete(Path.Combine(rootFolder, item.File_Path));
+                    }
+                }
+            }
+            var res = dataAccess.DeleteSubmission(id);
+               
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult GetAllPostOfStudent()
         {
             var userInfo = dataAccess.GetUserInfoByID(2);
@@ -150,6 +240,17 @@ namespace ManagerProject.Controllers
                 Created_Date = x.Created_Date.ToString()
             }).ToList();
             return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        public static string RemoveHtmlTag(string content)
+        {
+            if (string.IsNullOrEmpty(content))
+                return content;
+            else
+            {
+                content = System.Text.RegularExpressions.Regex.Replace(content, @"<[^>]+\s*?>", " ");
+                return content.Trim();
+            }
         }
     }
 }

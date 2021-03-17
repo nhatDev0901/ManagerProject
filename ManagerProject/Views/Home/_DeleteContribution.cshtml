@@ -1,14 +1,65 @@
 ﻿<div class="row">
     <div class="col-12">
         <h4 class="tt-delete-plan ">
-            Mày có muốn xóa bài của mày không?
+            Do you want to delete submission @Html.Raw(ViewBag.Title)?
         </h4>
     </div>
     <div class="col-12 mt-20px">
         <div class="row">
-            <div class="col-6 pr-10px"><button class="w-100 btn btn-cannel-contribution" id="closeDeleteVisit">MÉO!</button></div>
-            <div class="col-6 pl-10px"><button class="w-100 btn btn-save-contribution" id="saveVisit">XÓA CMM ĐI!</button></div>
+            <div class="col-6 pr-10px"><button class="w-100 btn btn-cannel-contribution" id="closeDeleteVisit">CANCEL</button></div>
+            <div class="col-6 pl-10px"><button class="w-100 btn btn-save-contribution" id="saveVisit">DELETE</button></div>
         </div>
     </div>
 </div>
+
+<script>
+
+
+    $("#closeDeleteVisit").click(function () {
+        var popup = $("#popupDeleteWindows").data("kendoWindow");
+        popup.close();
+    })
+
+
+    $("#saveVisit").click(function () {
+        $.ajax({
+            url: '@Url.Action("DeleteSubmission", "Home")',
+            type: "POST",
+            dataType: "json",
+            data: {
+                id: '@Html.Raw(ViewBag.SubID)'
+            },
+            success: function (result) {
+                var popup = $("#popupDeleteWindows").data("kendoWindow");
+                popup.close();
+                if (result == 1) {
+                    GetData()
+                }
+            }
+        });
+    })
+
+    function GetData() {
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read: function (options) {
+                    $.ajax({
+                        url: '/Home/GetAllPostOfStudent',
+                        dataType: "json",
+                        type: "POST",
+                        success: function (result) {
+                            options.success(result);
+                        },
+                        error: function (result) {
+                            options.error(result);
+                        }
+                    });
+                }
+            },
+            pageSize: 25
+        });
+        var GridData = $("#ordersGrid").data('kendoGrid');
+        GridData.setDataSource(dataSource);
+    }
+</script>
 

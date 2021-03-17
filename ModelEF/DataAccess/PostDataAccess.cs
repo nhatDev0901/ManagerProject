@@ -58,7 +58,9 @@ namespace ModelEF.DataAccess
             {
                 db.SUBMITTIONS.Add(input);
                 db.SaveChanges();
-                return 1;
+                
+                var id = db.SUBMITTIONS.Where(x => x.Sub_Code == input.Sub_Code).FirstOrDefault();
+                return id.Sub_ID;
             }
             catch (Exception ex)
             {
@@ -88,6 +90,108 @@ namespace ModelEF.DataAccess
             {
                 return -1;
                 throw;
+            }
+        }
+
+        public SUBMITTION GetSubmittionByID(int id)
+        {
+            var data = db.SUBMITTIONS.Where(x => x.Sub_ID == id).FirstOrDefault();
+            return data;
+        }
+
+        public int EditSubmission(SUBMITTION entity)
+        {
+            try
+            {
+                var submission = db.SUBMITTIONS.Find(entity.Sub_ID);
+                submission.Sub_Title = entity.Sub_Title;
+                submission.Sub_Description = entity.Sub_Description;
+                submission.Updated_By = entity.Updated_By;
+                submission.Updated_Date = entity.Updated_Date;
+                db.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+
+                return -1;
+            }
+        }
+
+        public int DeleteSubmission(int id)
+        {
+            try
+            {
+                var data = db.SUBMITTIONS.Find(id);
+                var removeFile = db.FILES.RemoveRange(db.FILES.Where(x => x.Sub_ID == id));
+                db.Entry(data).State = System.Data.Entity.EntityState.Deleted;
+                db.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public List<FILE> GetFilesBySubCode(string code)
+        {
+            try
+            {
+                var data = db.FILES.Where(x => x.Sub_Code == code).ToList();
+                return data;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public List<FILE> GetFilesBySubID(int id)
+        {
+            try
+            {
+                var data = db.FILES.Where(x => x.Sub_ID == id).ToList();
+                return data;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public int EditFileByID(FILE entity, List<int> listid)
+        {
+            try
+            {
+                foreach (var item in listid)
+                {
+                    var data = db.FILES.Find();
+                    data.File_Path = entity.File_Path;
+                    data.File_Name = entity.File_Name;
+                    data.Sub_ID = entity.Sub_ID;
+                    db.SaveChanges();
+                }              
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public int DeleteFile(int id)
+        {
+            try
+            {
+                var data = db.FILES.Find(id);
+                db.Entry(data).State = System.Data.Entity.EntityState.Deleted;
+                db.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return -1;
             }
         }
     }

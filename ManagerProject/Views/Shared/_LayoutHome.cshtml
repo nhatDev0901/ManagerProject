@@ -1,9 +1,11 @@
 ﻿@using System.Threading;
+@using ManagerProject.Models;
 @{
     var currLang = Thread.CurrentThread.CurrentCulture.ToString();
     var classEn = currLang == "en-US" ? "" : "lang-nonactive";
     var classVi = currLang == "vi-VN" ? "" : "lang-nonactive";
 
+    var userSession = (UserLoginModel)Session[ManagerProject.Helper.Commons.USER_SEESION];
 
 }
 <!DOCTYPE html>
@@ -124,7 +126,7 @@
                             <div class="dot-indicator bg-success"></div>
                         </div>
                         <div class="text-wrapper">
-                            <p class="profile-name">Duc Nhat</p>
+                            <p class="profile-name">@Html.Raw(userSession.Username)</p>
                             <p class="designation">Student</p>
                         </div>
                     </a>
@@ -139,7 +141,7 @@
                 </li>
                 @RenderSection("slider", required: false)
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index","Home")">
+                    <a class="nav-link" href="@Url.Action("Logout","Login")">
                         @*<i class="menu-icon typcn typcn-shopping-bag"></i>*@
                         <i class="fa fa-sign-out" aria-hidden="true"></i>
                         <span class="menu-title">LOG OUT</span>
@@ -174,8 +176,8 @@
 
         <script id="template" type="text/x-kendo-template">
             <div class="template-wrapper"> 
-                <h3>Duc Nhat</h3>
-                <a class="nav-link" href="@Url.Action("Index","Home")">
+                <h3>@Html.Raw(userSession.Username)</h3>
+                <a class="nav-link" href="@Url.Action("Logout","Login")">
                     @*<i class="menu-icon typcn typcn-shopping-bag"></i>*@
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     <span class="menu-title">LOG OUT</span>

@@ -1,7 +1,14 @@
+@using ManagerProject.Models
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
+
+@{
+    var userSession = (UserLoginModel)Session[ManagerProject.Helper.Commons.USER_SEESION];
+
+}
+
 @section slider{
     <li class="nav-item">
         <a class="nav-link" onclick='popupAdd()' href="javascript:void(0)">
@@ -9,12 +16,12 @@
             <span class="menu-title">ADD NEW CONTRIBUTION</span>
         </a>
     </li>
-    <li class="nav-item">
+    @*<li class="nav-item">
         <a class="nav-link" href="@Url.Action("EmailNotification","Home")">
             <i class="menu-icon typcn typcn-shopping-bag"></i>
             <span class="menu-title">SEND EMAIL TEST</span>
         </a>
-    </li>
+    </li>*@
 }
 
 <div id="ordersGrid"></div>
@@ -31,8 +38,8 @@
 
 <script id="status-template" type="text/x-kendo-template">
     <div class="d-flex w-100 text-center">
-        <a title="Edit" class="button buttonEdit rounded-circle btn-i-center" onclick="popupEdit()"><i class="fa fa-edit" aria-hidden="true"></i></a>
-        <a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2" onclick="popupDelete()"><i class="fa fa-trash" aria-hidden="true"></i></a>
+        <a title="Edit" class="button buttonEdit rounded-circle btn-i-center" onclick="popupEdit('#:Sub_ID#')"><i class="fa fa-edit" aria-hidden="true"></i></a>
+        <a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2" onclick="popupDelete('#:Sub_ID#', '#:Sub_Title#')"><i class="fa fa-trash" aria-hidden="true"></i></a>
     </div>
 </script>
 
@@ -73,7 +80,7 @@
                 read: function (options) {
                     $.ajax({
                         url: '@Url.Action("GetAllPostOfStudent", "Home")',
-                        dataType: "json", 
+                        dataType: "json",
                         success: function (result) {
                             options.success(result);
                             console.log("data>>", result)
@@ -195,14 +202,14 @@
         scrollable: true
     });
 
-    function popupEdit() {
-        $('#wndEditContent').load("/Home/EditContribution/", function () {
+    function popupEdit(id) {
+        $('#wndEditContent').load("/Home/EditContribution/?Subid=" + id, function () {
             $("#popupEditWindows").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
         });
     }
     // popup delete
-    function popupDelete() {
-        $('#wndDeleteContent').load("/Home/DeleteContribution/", function () {
+    function popupDelete(id, title) {
+        $('#wndDeleteContent').load("/Home/DeleteContribution/?Subid=" + id + "&title=" + title, function () {
             $("#popupDeleteWindows").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
         });
     }

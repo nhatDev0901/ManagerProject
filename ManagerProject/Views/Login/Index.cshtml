@@ -4,55 +4,56 @@
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
-    <div class="row w-100">
-        <div class="col-lg-4 mx-auto">
-            <div class="auto-form-wrapper">
-                <form action="#">
-                    <h2 class="login-title">
-                        LOGIN
-                    </h2>
-                    <div class="form-group">
-                        <label class="label">Username</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Username" id="user_name">
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="mdi mdi-check-circle-outline"></i>
-                                </span>
-                            </div>
+<div class="row w-100">
+    <div class="col-lg-4 mx-auto">
+        <div class="auto-form-wrapper">
+            <form action="#">
+                <h2 class="login-title">
+                    LOGIN
+                </h2>
+                <div class="form-group">
+                    <label class="label">Username</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Username" id="user_name">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="mdi mdi-check-circle-outline"></i>
+                            </span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="label">Password</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="password" placeholder="*********">
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="mdi mdi-check-circle-outline"></i>
-                                </span>
-                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="label">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" placeholder="*********">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="mdi mdi-check-circle-outline"></i>
+                            </span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary submit-btn btn-block" id="btn-login">Login</button>
-                    </div>
-                    <div class="form-group d-flex justify-content-between">
-                        <div class="form-check form-check-flat mt-0">
+                </div>
+                <div class="form-group">
+                    @*<button class="btn btn-primary submit-btn btn-block" id="btn-login">Login</button>*@
+                    <input type="button" name="" value="Login" class="btn btn-primary submit-btn btn-block" id="btn-login"/>
+                </div>
+                <div class="form-group d-flex justify-content-between">
+                    <div class="form-check form-check-flat mt-0">
 
-                        </div>
-                        <a href="javascript:void(0)" onclick="popupForgotPassword()" class="text-small forgot-password text-black">Forgot Password</a>
                     </div>
+                    <a href="javascript:void(0)" onclick="popupForgotPassword()" class="text-small forgot-password text-black">Forgot Password</a>
+                </div>
 
-                </form>
-            </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div id="popupForgotPassword">
-        <div id="wndForgotPassword"></div>
-    </div>
-
-    <script>
+<div id="popupForgotPassword">
+    <div id="wndForgotPassword"></div>
+</div>
+<div id="dialog"></div>
+<script>
         $("#btn-login").click(function () {
             var username = $("#user_name").val();
             var pass = document.getElementById("password").value;
@@ -67,11 +68,43 @@
                 contentType: false,
                 processData: false,
                 data: formData,
-                success: function (result) {
-                    console.log("data>>", result)
+                success: function (res) {
+                    console.log("data>>", res)
+                    if (res == 0) {
+                        initDialog("Notification", "Account not exists!", "Close");
+                    }
+                    if (res == -1) {
+                        initDialog("Notification", "Username / Password is not correct", "Close");
+                    }
+                    if (res == -2) {
+                        initDialog("Notification", "Loggin not success! System error.", "Close");
+                    }
+                    if (res == -3) {
+                        initDialog("Notification", "Account dose not access to page. Not permission.", "Close");
+                    }
+                    if (res == 1) {
+                        window.location.href = "@Url.Action("Index","Home")";
+                    }
+
                 }
             });
         })
+
+        function initDialog(title, content, contentBtnCancel = '') {
+
+            $('#dialog').kendoDialog({
+                width: "450px",
+                title: title,
+                closable: false,
+                visible: false,
+                content: " <span class='k-icon k-i-info'></span>" + content,
+                buttonLayout: "normal",
+                actions: [
+                    { text: contentBtnCancel },
+                ]
+            });
+            $('#dialog').data("kendoDialog").open().element.closest(".k-window").css({ top: 40 });
+        }
 
         $("#popupForgotPassword").kendoWindow({
             title: "@Html.Raw("FORGOT PASSWORD")",
@@ -88,4 +121,4 @@
                 $("#popupForgotPassword").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
             });
         }
-    </script>
+</script>

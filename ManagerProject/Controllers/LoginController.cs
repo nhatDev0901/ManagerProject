@@ -1,4 +1,5 @@
 ﻿using ManagerProject.Models;
+using ModelEF.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace ManagerProject.Controllers
             }
         }*/
         // GET: Login
+        private LoginDataAccess dataAccess = new LoginDataAccess();
         public ActionResult Index()
         {          
             return View();
@@ -41,16 +43,58 @@ namespace ManagerProject.Controllers
         [HttpPost]
         public ActionResult Login(LoginModel model)
         {
-            if (ModelState.IsValid)
+            int responseCode = 0;
+
+            var hashPassword = Helper.Commons.MD5Hash(model.Password);
+            var result = dataAccess.LoginHome(model.UserName, hashPassword);
+
+            if (result == 1) // dang nhap thanh cong
             {
-                int res = 0;
+                var userInfo = dataAccess.GetUserInfoLogging(model.UserName);
+                var userSession = new UserLoginModel();
+                userSession.Username = userInfo.Username;
+                userSession.UserID = userInfo.User_ID;
+                userSession.Email = userInfo.Email;
+                userSession.Department = userInfo.DEPARTMENT.Dep_Name;
+                userSession.Role = userInfo.ROLE.Role_Name;
+                Session.Add(Helper.Commons.USER_SEESION, userSession);
+                //return RedirectToAction("Index", "Home");
+                responseCode = 1;
             }
-            return Json(null, JsonRequestBehavior.AllowGet);
+            else if (result == -1)
+            {
+                //ModelState.AddModelError("", "Username / Password is not correct");
+                responseCode = -1;
+            }
+            else if (result == -3)
+            {
+                //ModelState.AddModelError("", "Account dose not access to page. Not permission.");
+                responseCode = -3;
+            }
+            else if (result == 0)
+            {
+                //ModelState.AddModelError("", "Account not exists!");
+                responseCode = 0;
+            }
+            else
+            {
+                //ModelState.AddModelError("", "Loggin not success! System error.");
+                responseCode = -2;
+            }
+            return Json(responseCode, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ForgotPassword()
         {
             return PartialView("_ForgotPassword");
         }
+
+        public ActionResult Logout()
+        {
+            Session[Helper.Commons.USER_SEESION] = null;
+            return Redirect("/");
+        }
+
+
     }
 }

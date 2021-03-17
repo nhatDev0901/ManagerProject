@@ -13,6 +13,7 @@ namespace ManagerProject.Models
         public string Department_Name { get; set; }
         public string Description { get; set; } 
         public string Created_Date { get; set; } 
+        public string SubCode { get; set; } 
     }
 
     public class ParamInputCreateModel
@@ -20,5 +21,7 @@ namespace ManagerProject.Models
         public string title { get; set; }
         public string description { get; set; }
         public List<HttpPostedFileBase> files { get; set; }
+        public int Sub_ID { get; set; }
+        public string SubCode { get; set; }
     }
 }
