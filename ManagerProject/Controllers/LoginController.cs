@@ -58,6 +58,7 @@ namespace ManagerProject.Controllers
                 userSession.Department = userInfo.DEPARTMENT.Dep_Name;
                 userSession.Role = userInfo.ROLE.Role_Name;
                 userSession.RoleID = userInfo.ROLE.Role_ID;
+                userSession.Department_ID = userInfo.DEPARTMENT.Dep_ID;
                 Session.Add(Helper.Commons.USER_SEESION, userSession);
                 //return RedirectToAction("Index", "Home");
                 responseCode = 1;

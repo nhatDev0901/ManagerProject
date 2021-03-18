@@ -15,7 +15,7 @@ namespace ModelEF.DataAccess
             db = new ManageSubmits();
         }
 
-        public List<SUBMITTION> GetAllPostByUser(int userid)
+        public List<SUBMITTION> GetAllPostByUser(int? userid)
         {
             var list = db.SUBMITTIONS.Where(x => x.Created_By == userid).ToList();
             return list;
@@ -118,6 +118,23 @@ namespace ModelEF.DataAccess
             }
         }
 
+        public int EditPublicStatus(SUBMITTION entity)
+        {
+            try
+            {
+                var data = db.SUBMITTIONS.Find(entity.Sub_ID);
+                data.IsPublic = entity.IsPublic;
+
+                db.SaveChanges();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                return -1;
+                throw;
+            }
+        }
+
         public int DeleteSubmission(int id)
         {
             try
@@ -193,6 +210,27 @@ namespace ModelEF.DataAccess
             {
                 return -1;
             }
+        }
+
+        public List<SUBMITTION> GetListSubmisstionForAdmin(int? DepID)
+        {
+            try
+            {
+                var model = db.SUBMITTIONS.Join(db.USERS, x => x.Created_By, y => y.User_ID, (x, y) => x).ToList();
+                var list = model.Where(x => x.USER.Dep_ID == DepID).ToList();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public List<DEPARTMENT> GetListDepartment()
+        {
+            var list = db.DEPARTMENTS.ToList();
+            return list;
         }
     }
 }

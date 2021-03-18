@@ -1,7 +1,6 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutHome.cshtml";
+    Layout = "~/Areas/Manager/Views/Shared/_LayoutHome.cshtml";
 }
 
 <div class="col-lg-6 grid-margin stretch-card" style="float: left">
@@ -206,7 +205,7 @@
 
     function GetRatePublicByDepartment() {
         $.ajax({
-            url: '@Url.Action("GetRateOfSubmissionOrNotSubmissionStatistic", "Statistic")',
+            url: '@Url.Action("GetRateOfSubmissionOrNotSubmissionStatistic", "ManagerHome")',
             type: "POST",
             dataType: "json",
             success: function (result) {
@@ -223,8 +222,7 @@
         var dataCollector = new kendo.data.DataSource({
             transport: {
                 read: {
-                    @*url: '@Url.Action("GetDataFieldCollectorList", "FCDashboard")',*@
-                    url: '@Url.Action("GetNumberOfSubmissionsInDepartment", "Statistic")',
+                    url: '@Url.Action("GetNumberOfSubmissionsAll", "ManagerHome")',
                     dataType: "json"
                 }
             },
@@ -238,7 +236,7 @@
 
         dataCollector.fetch(function () {
             $("#chart2").data("kendoChart").setDataSource(dataCollector.data());
-            $("#chart2").data("kendoChart").dataSource.pageSize(10);        
+            $("#chart2").data("kendoChart").dataSource.pageSize(10);
         });
     }
     GetRatePublicByDepartment();

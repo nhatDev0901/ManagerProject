@@ -14,6 +14,19 @@ namespace ManagerProject.Models
         public string Description { get; set; } 
         public string Created_Date { get; set; } 
         public string SubCode { get; set; } 
+        public int? IsPublic { get; set; } 
+        public string PublicStatus
+        {
+            get
+            {
+                string text = "Not Public";
+                if (IsPublic == 1)
+                {
+                    text = "Public";
+                }
+                return text;
+            }
+        }
     }
 
     public class ParamInputCreateModel
@@ -23,5 +36,16 @@ namespace ManagerProject.Models
         public List<HttpPostedFileBase> files { get; set; }
         public int Sub_ID { get; set; }
         public string SubCode { get; set; }
+    }
+
+    public class ChangeStatusSubmissionModel
+    {
+        public int Sub_ID { get; set; }
+    }
+
+    public class ItemValueModel
+    {
+        public int ItemValue { get; set; }
+        public string ItemText { get; set; }
     }
 }

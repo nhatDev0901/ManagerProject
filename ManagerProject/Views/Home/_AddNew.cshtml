@@ -137,9 +137,41 @@
             processData: false,
             data: formData,
             success: function (result) {
-                console.log("data>>", result)
+                var popup = $("#popupEdit").data("kendoWindow");
+                popup.close();
+                if (result == 1) {
+                    alert("Your submission has been successfully submitted!");
+                    GetReloadData()
+                } else {
+                    alert("An error occurred during the submission process. Please try again!");
+                }
+
+                
             }
         });
 
+    }
+
+    function GetReloadData() {
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read: function (options) {
+                    $.ajax({
+                        url: '/Home/GetAllPostOfStudent',
+                        dataType: "json",
+                        type: "POST",
+                        success: function (result) {
+                            options.success(result);
+                        },
+                        error: function (result) {
+                            options.error(result);
+                        }
+                    });
+                }
+            },
+            pageSize: 25
+        });
+        var GridData = $("#ordersGrid").data('kendoGrid');
+        GridData.setDataSource(dataSource);
     }
 </script>

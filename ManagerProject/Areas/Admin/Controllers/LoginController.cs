@@ -38,6 +38,7 @@ namespace ManagerProject.Areas.Admin.Controllers
                 userSession.Email = userInfo.Email;
                 userSession.Department = userInfo.DEPARTMENT.Dep_Name;
                 userSession.Role = userInfo.ROLE.Role_Name;
+                userSession.Department_ID = userInfo.DEPARTMENT.Dep_ID;
                 Session.Add(Helper.Commons.USER_SEESION_ADMIN, userSession);
                 responseCode = 1;
             }

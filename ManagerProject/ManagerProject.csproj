@@ -140,6 +140,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminHomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
     <Compile Include="Areas\Admin\Controllers\StatisticController.cs" />
+    <Compile Include="Areas\Admin\Models\StatisticModel.cs" />
     <Compile Include="Areas\Manager\Controllers\LoginController.cs" />
     <Compile Include="Areas\Manager\Controllers\ManagerHomeController.cs" />
     <Compile Include="Areas\Manager\ManagerAreaRegistration.cs" />
@@ -614,6 +615,9 @@
     <Content Include="Content\kendo\css\images\kendoui.woff" />
     <Content Include="Areas\Admin\Views\Login\_ForgotPassword.cshtml" />
     <Content Include="Areas\Manager\Views\Login\_ForgotPassword.cshtml" />
+    <Content Include="ClassDiagram1.cd" />
+    <Content Include="ClassDiagram2.cd" />
+    <Content Include="Areas\Manager\Views\ManagerHome\Statistic.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\fontawesome.min.js" />
     <Content Include="Scripts\Gsap.js" />
@@ -655,7 +659,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\ViewModels\" />
     <Folder Include="Areas\Manager\Data\" />
     <Folder Include="Areas\Manager\Models\" />

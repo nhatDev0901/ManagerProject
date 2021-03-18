@@ -35,6 +35,8 @@ namespace ModelEF.EF
 
         public int? Updated_By { get; set; }
 
+        public int? IsPublic { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COMMENT> COMMENTS { get; set; }
 

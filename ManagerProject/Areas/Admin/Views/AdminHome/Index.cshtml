@@ -65,22 +65,37 @@
             { OrderID: 22, OrderDate: "2019-05-16T12:00:00", Freight: 9.87, ShipCity: "Long Beach", ShipCountry: "USA" },
             { OrderID: 23, OrderDate: "2019-08-18T12:00:00", Freight: 24.13, ShipCity: "Singapore", ShipCountry: "Singapore" }
         ];
+
         var gridDataSource = new kendo.data.DataSource({
-            data: orderData,
+            //data: orderData,
+            transport: {
+                read: function (options) {
+                    $.ajax({
+                        url: '@Url.Action("GetSubmissionForAdmin", "AdminHome")',
+                        dataType: "json",
+                        success: function (result) {
+                            options.success(result);
+                        },
+                        error: function (result) {
+                            options.error(result);
+                        }
+                    });
+                }
+            },
             schema: {
                 model: {
                     fields: {
-                        OrderID: { type: "number" },
-                        Freight: { type: "number" },
-                        OrderDate: { type: "date" },
-                        ShipCountry: { type: "string" },
-                        ShipCity: { type: "string" }
+                        Sub_ID: { type: "number" },
+                        Sub_Title: { type: "string" },
+                        Description: { type: "string" },
+                        Department_ID: { type: "number" },
+                        //Created_Date: { type: "datetime" }
                     }
                 }
             },
             pageSize: 10,
             sort: {
-                field: "OrderDate",
+                field: "Created_Date",
                 dir: "desc"
             }
         });
@@ -116,27 +131,32 @@
                 width: "50px"
             },
             {
-                field: "OrderID",
-                title: "CODE",
-                width: 160
+                field: "Sub_ID",
+                title: "ID",
+                width: 80
             },
             {
-                field: "Freight",
+                field: "Sub_Title",
                 width: 160,
                 title: "TITLE"
             },
             {
-                field: "ShipCountry",
-                title: "CLASS CODE",
+                field: "Department_Name",
+                title: "DEPARTMENT",
                 width: 200,
             },
             {
-                field: "OrderDate",
+                field: "PublicStatus",
+                title: "STATUS",
+                width: 200,
+            },
+            {
+                field: "Created_Date",
                 title: "CREATED DATE",
                 format: "{0:dd MMMM yyyy}"
             },
             {
-                field: "ShipCity",
+                field: "Description",
                 title: "DESCRIPTION"
             }]
         });
@@ -194,7 +214,7 @@
             var grid = $("#ordersGrid").data("kendoGrid");
             var dataItem = grid.dataItem(this);
             //console.log(dataItem.OrderID);
-            arrSelect1.push(dataItem.OrderID);
+            arrSelect1.push(dataItem.Sub_ID);
         })
         console.log("Array>> ", arrSelect1.length)
 
@@ -206,7 +226,46 @@
     };
 
     function SubmitFile() {
+        var ChooseFiles = [];
+        for (var i = 0; i < arrSelect1.length; i++) {
+            ChooseFiles.push(arrSelect1[i]);
+        }      
+        $.ajax({
+            url: '@Url.Action("PublicFiles", "AdminHome")',
+            type: "POST",
+            dataType: "json",
+            data: {
+                listSubmiss: ChooseFiles
+            },
+            success: function (result) {
+                alert(result + " files was public!")
+                GetDataAdmin()
+            }
+        });
         alert("You submitted " + arrSelect1.length + " file.</br>" + arrSelect1)
+    }
+
+    function GetDataAdmin() {
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read: function (options) {
+                    $.ajax({
+                        url: '/AdminHome/GetSubmissionForAdmin',
+                        dataType: "json",
+                        type: "POST",
+                        success: function (result) {
+                            options.success(result);
+                        },
+                        error: function (result) {
+                            options.error(result);
+                        }
+                    });
+                }
+            },
+            pageSize: 25
+        });
+        var GridData = $("#ordersGrid").data('kendoGrid');
+        GridData.setDataSource(dataSource);
     }
 </script>
 

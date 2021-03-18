@@ -56,8 +56,8 @@ namespace ManagerProject.Controllers
             try
             {
                 var newSubmitID = dataAccess.CreateIDAuto("SM");
-                var userInfo = dataAccess.GetUserInfoByID(2); // muc dich lay thong tin user đang đăng nhập
-               
+                //var userInfo = dataAccess.GetUserInfoByID(2); 
+                var userInfo = (UserLoginModel)Session[Helper.Commons.USER_SEESION];
                 param.description = HttpUtility.HtmlDecode(RemoveHtmlTag(HttpUtility.HtmlDecode(param.description).Replace("<br />", "\n").Replace("</li>", "\n").Replace("&nbsp;", "")));
                 // lưu submittion
                 var inforSubmit = new SUBMITTION()
@@ -66,7 +66,8 @@ namespace ManagerProject.Controllers
                     Sub_Description = param.description,
                     Created_Date = DateTime.Now,
                     Sub_Code = newSubmitID,
-                    Created_By = userInfo.User_ID
+                    Created_By = userInfo.UserID,
+                    IsPublic = 0
                 };
                 var newID = dataAccess.AddSubmits(inforSubmit);               
                 // lưu file của submitton
@@ -91,7 +92,7 @@ namespace ManagerProject.Controllers
                         }
                     }
                 }
-                Task.Run(() => Helper.SendMail.SendEmailWhenAddNewSubmittion(userInfo.User_ID.ToString(), userInfo.Username, userInfo.DEPARTMENT.Dep_Name, userInfo.Email, param.title, param.files.Count()));
+                Task.Run(() => Helper.SendMail.SendEmailWhenAddNewSubmittion(userInfo.UserID.ToString(), userInfo.Username, userInfo.Department, userInfo.Email, param.title, param.files.Count()));
 
                 resCode = 1;
             }
@@ -228,14 +229,15 @@ namespace ManagerProject.Controllers
         }
         public ActionResult GetAllPostOfStudent()
         {
-            var userInfo = dataAccess.GetUserInfoByID(2);
-            var list = new PostDataAccess().GetAllPostByUser(2); // hard code
+            //var userInfo = dataAccess.GetUserInfoByID(2);
+            var userInfo = (UserLoginModel)Session[Helper.Commons.USER_SEESION];
+            var list = new PostDataAccess().GetAllPostByUser(userInfo.UserID); // hard code
             var res = list.Select(x => new SubmittionModel()
             {
                 Sub_ID = x.Sub_ID,
                 Sub_Title = x.Sub_Title,
-                Department_ID = userInfo.DEPARTMENT.Dep_ID,
-                Department_Name = userInfo.DEPARTMENT.Dep_Name,
+                Department_ID = userInfo.Department_ID,
+                Department_Name = userInfo.Department,
                 Description = x.Sub_Description,
                 Created_Date = x.Created_Date.ToString()
             }).ToList();
@@ -251,6 +253,34 @@ namespace ManagerProject.Controllers
                 content = System.Text.RegularExpressions.Regex.Replace(content, @"<[^>]+\s*?>", " ");
                 return content.Trim();
             }
+        }
+
+        public ActionResult GetListDepartment()
+        {
+            var item = new List<ItemValueModel>();
+            var res = dataAccess.GetListDepartment();
+            item = res.Select(x => new ItemValueModel {
+                ItemText = x.Dep_Name,
+                ItemValue = x.Dep_ID
+            }).ToList();
+            return Json(item, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetListSubmissionsByDepartment(int? DepID)
+        {
+            var data = dataAccess.GetListSubmisstionForAdmin(DepID);
+            var currentDep = dataAccess.GetListDepartment().Where(x => x.Dep_ID == DepID).FirstOrDefault();
+            var res = data.Select(x => new SubmittionModel()
+            {
+                Sub_ID = x.Sub_ID,
+                Sub_Title = x.Sub_Title,
+                Department_ID = currentDep.Dep_ID,
+                Department_Name = currentDep.Dep_Name,
+                Description = x.Sub_Description,
+                IsPublic = x.IsPublic,
+                Created_Date = x.Created_Date.ToString()
+            }).ToList();
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
     }
 }

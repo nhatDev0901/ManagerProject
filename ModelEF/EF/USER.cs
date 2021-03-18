@@ -31,7 +31,7 @@ namespace ModelEF.EF
         public int? Role_ID { get; set; }
 
         [StringLength(50)]
-        public string Email { get; set; } 
+        public string Email { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COMMENT> COMMENTS { get; set; }
