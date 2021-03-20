@@ -16,6 +16,7 @@ namespace ManagerProject.Areas.Manager.Controllers
     {
         // GET: Manager/ManagerHome
         private StatisticDataAccess dataAccess = new StatisticDataAccess();
+        private PostDataAccess DAManager = new PostDataAccess();
         public ActionResult Index()
         {
             if (Session[Helper.Commons.USER_SEESION_MANAGER] == null)
@@ -25,44 +26,34 @@ namespace ManagerProject.Areas.Manager.Controllers
             return View();
         }
 
-        public FileResult DownloadZipFiles()
+        
+        public ActionResult DownloadZipFiles(ListSubIDModel arrSelect)
         {
-            string fileName = string.Format("{0}_Files.zip", DateTime.Today.Date.ToString("dd-MM-yyyy") + "_1");
-            string[] filePaths = Directory.GetFiles(Server.MapPath("~/Uploads/"));
+            //string fileName = string.Format("{0}_Files.zip", DateTime.Today.Date.ToString("dd-MM-yyyy") + "_1");
+            //string[] filePaths = Directory.GetFiles(Server.MapPath("~/Uploads/FilesSubmitted"));
             //var tempOutPutPaht = Server.MapPath(Url.Content("/Uploads/")) + fileName; 
 
             try
             {
-                //using (Ionic.Zip.ZipFile zip = new Ionic.Zip.ZipFile())
-                //{
-                //    zip.AlternateEncodingUsage = Ionic.Zip.ZipOption.AsNecessary;
-                //    zip.AddDirectoryByName("Uploads");
-                //    var listFile = new List<string>();
-                //    listFile.Add(Server.MapPath("~/Uploads/Research_Ethics_Approval_Form.docx"));
-                //    listFile.Add(Server.MapPath("~/Uploads/Research_Proposal_Form.docx"));
-
-                //    foreach (var item in filePaths)
-                //    {
-                //        zip.AddFile(item, "Uploads");
-                //    }
-                //    string zipName = String.Format("Zip_{0}.zip", DateTime.Now.ToString("yyyy-MMM-dd-HHmmss"));
-                //    using (MemoryStream ms = new MemoryStream())
-                //    {
-                //        zip.Save(ms);
-                //        return File(filePaths[0], "application/zip", zipName);]p
-                //    }
-                //}
-
-                Response.Clear();
-                Response.ContentType = "application/zip";
-                Response.AddHeader("content-disposition", "filename=" + "sample.zip");
-                using (Ionic.Zip.ZipFile zip = new Ionic.Zip.ZipFile())
+                if (System.IO.File.Exists(Server.MapPath("~/Uploads/sample.zip")))
                 {
-                    zip.AddDirectory(Server.MapPath("~/Uploads"));
-                    zip.Save(Server.MapPath("~/Uploads/sample.zip"));
-                    byte[] byte1 = System.IO.File.ReadAllBytes(Server.MapPath("~/Uploads/sample.zip"));
-                    return File(byte1 , "application/zip", "sample.zip");
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/sample.zip"));
                 }
+
+                ZipArchive zip = System.IO.Compression.ZipFile.Open(Server.MapPath("~/Uploads/sample.zip"), ZipArchiveMode.Create);
+                foreach (var item in arrSelect.ListSubID)
+                {
+                    var file = DAManager.GetFilesBySubID(item);
+                    foreach (var item2 in file)
+                    {
+                        zip.CreateEntryFromFile(Server.MapPath("~/Uploads/FilesSubmitted/" + item2.File_Path), item2.File_Path);
+                    }
+
+
+                }
+                zip.Dispose();
+                byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath("~/Uploads/sample.zip"));
+                return File(Server.MapPath("~/Uploads/sample.zip"), System.Net.Mime.MediaTypeNames.Application.Zip, "samplfe.zip");
             }
             catch (Exception e)
             {
@@ -127,6 +118,23 @@ namespace ManagerProject.Areas.Manager.Controllers
             };
 
             return Json(dataModel, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetSubmissionForManager()
+        {
+            var data = DAManager.GetSubmissionsForManager();
+            var res = data.Select(x => new SubmittionModel()
+            {
+                Sub_ID = x.Sub_ID,
+                Sub_Title = x.Sub_Title,
+                Department_ID = DAManager.GetDepartmentByUserID(x.USER.User_ID).Dep_ID,
+                Department_Name = DAManager.GetDepartmentByUserID(x.USER.User_ID).Dep_Name,
+                Description = x.Sub_Description,
+                Created_Date = x.Created_Date.ToString(),
+                IsPublic = x.IsPublic
+            }).ToList();
+
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
     }
 }   

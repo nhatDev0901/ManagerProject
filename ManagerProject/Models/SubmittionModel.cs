@@ -48,4 +48,9 @@ namespace ManagerProject.Models
         public int ItemValue { get; set; }
         public string ItemText { get; set; }
     }
+
+    public class ListSubIDModel
+    {
+        public List<int> ListSubID { get; set; } 
+    }
 }

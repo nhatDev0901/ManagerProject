@@ -232,5 +232,19 @@ namespace ModelEF.DataAccess
             var list = db.DEPARTMENTS.ToList();
             return list;
         }
+
+        public List<SUBMITTION> GetSubmissionsForManager()
+        {
+            var model = db.SUBMITTIONS.Join(db.USERS, x => x.Created_By, y => y.User_ID, (x, y) => x).ToList();
+            var list = model.Where(x => x.IsPublic == 1).ToList();
+            return list;
+        }
+
+        public DEPARTMENT GetDepartmentByUserID(int userID)
+        {
+            var dataUser = db.USERS.Where(x => x.User_ID == userID).FirstOrDefault();
+            var departmentData = db.DEPARTMENTS.Where(y => y.Dep_ID == dataUser.Dep_ID).FirstOrDefault();
+            return departmentData;
+        }
     }
 }

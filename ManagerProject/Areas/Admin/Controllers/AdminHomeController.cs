@@ -37,7 +37,7 @@ namespace ManagerProject.Areas.Admin.Controllers
                     Description = x.Sub_Description,
                     Created_Date = x.Created_Date.ToString(),
                     IsPublic = x.IsPublic
-                }).AsEnumerable();
+                }).ToList();
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
