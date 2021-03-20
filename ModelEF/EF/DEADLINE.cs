@@ -9,6 +9,12 @@ namespace ModelEF.EF
     [Table("DEADLINE")]
     public partial class DEADLINE
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DEADLINE()
+        {
+            SUBMITTIONS = new HashSet<SUBMITTION>();
+        }
+
         [Key]
         public int DeadLine_ID { get; set; }
 
@@ -17,5 +23,8 @@ namespace ModelEF.EF
         public DateTime? DeadLine_End { get; set; }
 
         public DateTime? Created_Date { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SUBMITTION> SUBMITTIONS { get; set; }
     }
 }

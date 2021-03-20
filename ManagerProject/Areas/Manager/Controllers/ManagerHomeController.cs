@@ -140,6 +140,10 @@ namespace ManagerProject.Areas.Manager.Controllers
 
         public ActionResult DeadLine()
         {
+            if (Session[Helper.Commons.USER_SEESION_MANAGER] == null)
+            {
+                return Redirect("/Manager/");
+            }
             return View();
         }
 

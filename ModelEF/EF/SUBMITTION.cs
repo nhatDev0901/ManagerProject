@@ -37,8 +37,12 @@ namespace ModelEF.EF
 
         public int? IsPublic { get; set; }
 
+        public int? DeadLine_ID { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COMMENT> COMMENTS { get; set; }
+
+        public virtual DEADLINE DEADLINE { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FILE> FILES { get; set; }
