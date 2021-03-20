@@ -2,6 +2,7 @@
 using ManagerProject.Areas.Admin.Models;
 using ManagerProject.Models;
 using ModelEF.DataAccess;
+using ModelEF.EF;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -134,6 +135,24 @@ namespace ManagerProject.Areas.Manager.Controllers
                 IsPublic = x.IsPublic
             }).ToList();
 
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DeadLine()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SetDeadLine(DateTime? start, DateTime? end)
+        {
+            var infoDL = new DEADLINE()
+            {
+                DeadLine_Start = start,
+                DeadLine_End = end,
+                Created_Date = DateTime.Now
+            };
+            var res = DAManager.SetDeadLine(infoDL);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
     }

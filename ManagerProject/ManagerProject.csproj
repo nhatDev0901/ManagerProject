@@ -621,6 +621,7 @@
     <Content Include="ClassDiagram1.cd" />
     <Content Include="ClassDiagram2.cd" />
     <Content Include="Areas\Manager\Views\ManagerHome\Statistic.cshtml" />
+    <Content Include="Areas\Manager\Views\ManagerHome\DeadLine.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\fontawesome.min.js" />
     <Content Include="Scripts\Gsap.js" />

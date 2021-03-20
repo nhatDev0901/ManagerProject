@@ -55,6 +55,7 @@
     <Compile Include="DataAccess\PostDataAccess.cs" />
     <Compile Include="DataAccess\StatisticDataAccess.cs" />
     <Compile Include="EF\COMMENT.cs" />
+    <Compile Include="EF\DEADLINE.cs" />
     <Compile Include="EF\DEPARTMENT.cs" />
     <Compile Include="EF\FILE.cs" />
     <Compile Include="EF\ManageSubmits.cs" />

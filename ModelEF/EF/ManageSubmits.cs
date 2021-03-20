@@ -13,6 +13,7 @@ namespace ModelEF.EF
         }
 
         public virtual DbSet<COMMENT> COMMENTS { get; set; }
+        public virtual DbSet<DEADLINE> DEADLINEs { get; set; }
         public virtual DbSet<DEPARTMENT> DEPARTMENTS { get; set; }
         public virtual DbSet<FILE> FILES { get; set; }
         public virtual DbSet<ROLE> ROLES { get; set; }

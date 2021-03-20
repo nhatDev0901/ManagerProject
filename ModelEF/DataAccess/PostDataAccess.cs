@@ -246,5 +246,19 @@ namespace ModelEF.DataAccess
             var departmentData = db.DEPARTMENTS.Where(y => y.Dep_ID == dataUser.Dep_ID).FirstOrDefault();
             return departmentData;
         }
+
+        public int SetDeadLine(DEADLINE input)
+        {
+            try
+            {
+                db.DEADLINEs.Add(input);
+                db.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
     }
 }
