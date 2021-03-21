@@ -13,7 +13,7 @@
             <br />
             <div class="row">
                 <div class="col-lg-4 col-md-4">
-                    <label>DESCRIPTION</label><span class="input-required">*</span>
+                    <label>DESCRIPTION</label><span class="input-required"></span>
                 </div>
                 <div class="col-lg-8 col-md-8">
                     @*<input type="text" name="name" value="" id="input-des" required style="width: 100%;" />*@
@@ -60,7 +60,9 @@
 
 <script>
     $("#input-title").kendoTextBox({
-
+        change: function (e) {
+            checkInput()
+        }
     });
 
     $("#input-des").kendoEditor({
@@ -82,7 +84,8 @@
             maxFileSize: 5000000,//Dung lượng file upload 5mb
             allowedExtensions: [".jpeg", ".jpg", ".png", ".doc", ".docx"],//Định dạng file
         },
-        select: onCheckFile
+        select: onCheckFile,
+
     }).data("kendoUpload");
 
     function onCheckFile(e) {
@@ -100,12 +103,19 @@
         });
     }
 
-    $("#ckb-policy-accept").click(function () {
-        if ($(this).is(':checked')) {
+    function checkInput() {
+        console.log("VAO")
+        var title = $('#input-title').val();
+        debugger
+        if ($("#ckb-policy-accept").is(':checked') && title != '') {
             $('#btn-add').attr("disabled", false);
-        } else {
+        }
+        else {
             $('#btn-add').attr("disabled", true);
         }
+    }
+    $("#ckb-policy-accept").click(function () {
+        checkInput()
     })
 
     function AddNewSubmittion() {

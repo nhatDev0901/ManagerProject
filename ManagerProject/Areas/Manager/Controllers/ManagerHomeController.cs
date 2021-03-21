@@ -50,8 +50,10 @@ namespace ManagerProject.Areas.Manager.Controllers
 
 
                 }
-                zip.Dispose();              
-                return File(Server.MapPath("~/Uploads/sample.zip"), "application/zip", "sample.zip");
+                zip.Dispose();
+
+                string zipName = string.Format("{0}_{1}.zip", "SUBMISSTION_FILES", DateTime.Now.ToString("ddMMyyyyHHmmss"));
+                return File(Server.MapPath("~/Uploads/sample.zip"), "application/zip", zipName);
             }
             catch (Exception e)
             {
@@ -135,7 +137,38 @@ namespace ManagerProject.Areas.Manager.Controllers
             {
                 return Redirect("/Manager/");
             }
-            return View();
+            var deadline = DAManager.GetDeadLine();
+            var model = new DeadLineViewModel();
+            DateTime today = DateTime.Now;
+            if (deadline == null)
+            {
+                model = new DeadLineViewModel
+                {
+                    DeadLine_Content = String.Empty,
+                    DeadLine_start = new DateTime(today.Year, today.Month, 1).ToShortDateString(),
+                    DeadLine_end = DateTime.Now.ToShortDateString()
+                };
+            }
+            else
+            {
+                model = new DeadLineViewModel
+                {
+                    DeadLine_Content = deadline.DeadLine_Content,
+                    DeadLine_start = deadline.DeadLine_Start.Value.ToShortDateString(),
+                    DeadLine_end = deadline.DeadLine_End.Value.ToShortDateString()
+                };
+            }
+            int checkDeadline = 0;
+            if (today >= deadline.DeadLine_Start && today <= deadline.DeadLine_End)
+            {
+                checkDeadline = 1;
+            }
+            else
+            {
+                checkDeadline = 2;
+            }
+            ViewBag.CheckDeadLine = checkDeadline;
+            return View(model);
         }
 
         [HttpPost]

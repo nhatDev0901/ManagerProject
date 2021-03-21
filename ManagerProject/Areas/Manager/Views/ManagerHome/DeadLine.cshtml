@@ -1,6 +1,9 @@
-﻿@{
+﻿@model ManagerProject.Models.DeadLineViewModel
+@{
     ViewBag.Title = "Home Page";
     Layout = "~/Areas/Manager/Views/Shared/_LayoutHome.cshtml";
+
+    var check = (int)ViewBag.CheckDeadLine;
 }
 @section slider{
 
@@ -19,23 +22,53 @@
 
 }
 
+@*<div>
+        <h2>CURRENT DEADLINE</h2>
+        <div class="row">
+            <div class="col-lg-1 col-md-4">
+                <label>TERM</label><span class="input-required"></span>
+            </div>
+            <div class="col-lg-8 col-md-8">
+                <label>@Html.Raw(Model.DeadLine_Content)</label><span class="input-required"></span>
+            </div>
+        </div>
+        <br />
+        <div>
+            START @Html.Raw(Model.DeadLine_start.Value.Date.ToString("dd/MM/yyyy")) ---> END
+            @Html.Raw(Model.DeadLine_end.Value.Date.ToString("dd/MM/yyyy"))
+        </div>
+
+    </div>*@
+
 <div>
+    <div class="row">
+        <div class="col-lg-1 col-md-4">
+            <label>TERM</label><span class="input-required"> *</span>
+        </div>
+        <div class="col-lg-8 col-md-8">
+            <input type="text" name="name" value="" id="input-title-deadline" required style="width: 50%;" />
+        </div>
+    </div>
+    <br />
+
     <div>
-        <input id="deadline-start" style="width: 20%"/> --->
-        <input id="deadline-end" style="width: 20%"/>
+        <input id="deadline-start" style="width: 20%" /> ---> <input id="deadline-end" style="width: 20%" />
     </div>
 
     <div style="padding-top: 20px">
         <input type="submit" id="btn-setDateline" class="btn btn-danger btn-lg" value="SET DEADLINE" />
     </div>
 
-</div> 
+</div>
+
+
+
 
 
 <script>
     var date = new Date();
     var start = $("#deadline-start").kendoDatePicker({
-        value: new Date(date.getFullYear(), date.getMonth(), 1),
+        value: "@Html.Raw(Model.DeadLine_start)",//new Date(date.getFullYear(), date.getMonth(), 1),
         dateInput: true,
         format: "dd/MM/yyyy",
         change: function () {
@@ -44,7 +77,7 @@
     }).data("kendoDatePicker");;
 
     var end = $("#deadline-end").kendoDatePicker({
-        value: new Date(),
+        value: "@Html.Raw(Model.DeadLine_end)",//new Date(),
         dateInput: true,
         format: "dd/MM/yyyy",
         change: function () {
@@ -52,6 +85,9 @@
         }
     }).data("kendoDatePicker");
 
+    $("#input-title-deadline").kendoTextBox({
+        value: "@Html.Raw(Model.DeadLine_Content)"
+    });
 
     function startChange() {
         var startDate = start.value(),
@@ -120,6 +156,12 @@
 
             }
         });
+    }
+
+    if (@check == 1) {
+        $("#btn-setDateline").attr('disabled', true);
+    } else {
+        $("#btn-setDateline").removeAttr('disabled');
     }
 </script>
 

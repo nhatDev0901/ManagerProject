@@ -53,4 +53,11 @@ namespace ManagerProject.Models
     {
         public List<int> ListSubID { get; set; } 
     }
+
+    public class DeadLineViewModel
+    {
+        public string DeadLine_Content { get; set; }
+        public string DeadLine_start { get; set; }
+        public string DeadLine_end { get; set; }
+    }
 }
