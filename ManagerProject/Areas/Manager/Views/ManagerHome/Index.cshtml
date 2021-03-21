@@ -21,9 +21,9 @@
 
 <div id="ordersGrid"></div>
 <div style="padding-top: 20px; float: right">
-    @*<button type="button" id="btn-download" class="btn btn-danger btn-lg" disabled onclick="DownloadFile()">Download File</button>*@
 
-    <input type="submit" id="btn-download" class="btn btn-danger btn-lg" disabled onclick="DownloadFile()" value="Download File" />
+    <input type="button" id="btn-download" class="btn btn-danger btn-lg"  onclick="DownloadFile()" value="Download File" />
+
 </div>
 
 <script id="status-template" type="text/x-kendo-template">
@@ -133,19 +133,12 @@
 
         for (var i = 0; i < arrSelect.length; i++) {
             formData.append('ListSubID', arrSelect[i]);
+        }       
+        var s = "";
+        for (var i = 0; i < arrSelect.length; i++) {
+            s += "&arrSelect=" + arrSelect[i];
         }
-        $.ajax({
-            url: '@Url.Action("DownloadZipFiles", "ManagerHome")',
-            type: "POST",
-            dataType: "json",
-            enctype: 'multipart/form-data',
-            contentType: false,
-            processData: false,
-            data: formData,
-            success: function (result) {
-
-            }
-        });
+        location.href = '/ManagerHome/DownloadZipFiles/?' + s;
     }
 </script>
 

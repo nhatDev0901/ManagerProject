@@ -260,5 +260,10 @@ namespace ModelEF.DataAccess
                 return -1;
             }
         }
+
+        public DEADLINE GetDeadLine()
+        {
+            return db.DEADLINEs.FirstOrDefault();
+        }
     }
 }

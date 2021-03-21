@@ -6,11 +6,12 @@
 
 @{
     var userSession = (UserLoginModel)Session[ManagerProject.Helper.Commons.USER_SEESION];
+    var check = (int)ViewBag.CheckDeadLine;
 
 }
 
 @section slider{
-    @if (userSession.RoleID == 1)
+    @if (userSession.RoleID == 1 && check == 1)
     {
         <li class="nav-item">
             <a class="nav-link" onclick='popupAdd()' href="javascript:void(0)">

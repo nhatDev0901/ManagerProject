@@ -27,13 +27,8 @@ namespace ManagerProject.Areas.Manager.Controllers
             return View();
         }
 
-        
-        public ActionResult DownloadZipFiles(ListSubIDModel arrSelect)
+        public ActionResult DownloadZipFiles(List<int> arrSelect)
         {
-            //string fileName = string.Format("{0}_Files.zip", DateTime.Today.Date.ToString("dd-MM-yyyy") + "_1");
-            //string[] filePaths = Directory.GetFiles(Server.MapPath("~/Uploads/FilesSubmitted"));
-            //var tempOutPutPaht = Server.MapPath(Url.Content("/Uploads/")) + fileName; 
-
             try
             {
                 if (System.IO.File.Exists(Server.MapPath("~/Uploads/sample.zip")))
@@ -42,30 +37,26 @@ namespace ManagerProject.Areas.Manager.Controllers
                 }
 
                 ZipArchive zip = System.IO.Compression.ZipFile.Open(Server.MapPath("~/Uploads/sample.zip"), ZipArchiveMode.Create);
-                foreach (var item in arrSelect.ListSubID)
+                foreach (var item in arrSelect)
                 {
                     var file = DAManager.GetFilesBySubID(item);
                     foreach (var item2 in file)
                     {
-                        zip.CreateEntryFromFile(Server.MapPath("~/Uploads/FilesSubmitted/" + item2.File_Path), item2.File_Path);
+                        if (System.IO.File.Exists(Server.MapPath("~/Uploads/FilesSubmitted/" + item2.File_Path)))
+                        {
+                            zip.CreateEntryFromFile(Server.MapPath("~/Uploads/FilesSubmitted/" + item2.File_Path), item2.File_Path);
+                        }                      
                     }
 
 
                 }
-                zip.Dispose();
-                byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath("~/Uploads/sample.zip"));
-                return File(Server.MapPath("~/Uploads/sample.zip"), System.Net.Mime.MediaTypeNames.Application.Zip, "samplfe.zip");
+                zip.Dispose();              
+                return File(Server.MapPath("~/Uploads/sample.zip"), "application/zip", "sample.zip");
             }
             catch (Exception e)
             {
-
                 throw;
             }
-          
-
-            
-
-            //return File(finalResult, "application/zip", fileName);
         }
 
 

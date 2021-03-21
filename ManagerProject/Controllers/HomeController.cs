@@ -24,6 +24,19 @@ namespace ManagerProject.Controllers
             {
                 return Redirect("/");
             }
+            //check deadline
+            DateTime now = DateTime.Now;
+            int checkDeadline = 0;
+            var deadLineAvailable = dataAccess.GetDeadLine();
+            if (now >= deadLineAvailable.DeadLine_Start && now <= deadLineAvailable.DeadLine_End)
+            {
+                checkDeadline = 1;
+            }
+            else
+            {
+                checkDeadline = 2;
+            }
+            ViewBag.CheckDeadLine = checkDeadline;
             return View();
         }
 
