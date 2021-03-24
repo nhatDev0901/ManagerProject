@@ -60,4 +60,10 @@ namespace ManagerProject.Models
         public string DeadLine_start { get; set; }
         public string DeadLine_end { get; set; }
     }
+
+    public class ChartDataViewmodel
+    {
+        public int num { get; set; }
+        public string value { get; set; }
+    }
 }

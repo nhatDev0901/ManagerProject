@@ -21,8 +21,10 @@ namespace ManagerProject.Areas.Admin.Controllers
             }
 
             var userInfo = (UserLoginModel)Session[Helper.Commons.USER_SEESION_ADMIN];
-            ViewBag.totalPublic = dataAccess.GetSubmissionPublic(userInfo.Department_ID, "Admin").Count();
-            ViewBag.totalNonPublic = dataAccess.GetSubmissionNotPublic(userInfo.Department_ID, "Admin").Count();
+            var totalPublic = dataAccess.GetSubmissionPublic(userInfo.Department_ID, "Admin").Count();
+            var totalnonPublic = dataAccess.GetSubmissionNotPublic(userInfo.Department_ID, "Admin").Count();
+            ViewBag.totalPublic = totalPublic;
+            ViewBag.totalNonPublic = totalnonPublic;
 
             return View();
         }
@@ -33,23 +35,36 @@ namespace ManagerProject.Areas.Admin.Controllers
             var listPublic = dataAccess.GetSubmissionPublic(userInfo.Department_ID, "Admin").Count();
             var listNotPublic = dataAccess.GetSubmissionNotPublic(userInfo.Department_ID, "Admin").Count();
             int total = listPublic + listNotPublic;
-            float ratePublic = (listPublic * 100) / total;
-            float rateNotPublic = (listNotPublic * 100) / total;
+            float ratePublic, rateNotPublic;
+            if (total <= 0)
+            {
+                ratePublic = 0;
+                rateNotPublic = 0;
+            }
+            else
+            {
+                ratePublic = (listPublic * 100) / total;
+                rateNotPublic = (listNotPublic * 100) / total;
+            }
+             
 
             var dataModel = new List<StatisticModel>();
-            dataModel.Add(new StatisticModel
+            if (total > 0)
             {
-                category = "Public",   
-                value = ratePublic,
-                color = "#90cc38"
-            });
-
-            dataModel.Add(new StatisticModel
-            {
-                category = "Not public",               
-                value = rateNotPublic,
-                color = "#cb3414"
-            });
+                dataModel.Add(new StatisticModel
+                {
+                    category = "Public",
+                    value = ratePublic,
+                    color = "#90cc38"
+                });
+                dataModel.Add(new StatisticModel
+                {
+                    category = "Not public",
+                    value = rateNotPublic,
+                    color = "#cb3414"
+                });
+            }
+            
             return Json(dataModel, JsonRequestBehavior.AllowGet);
         }
 
@@ -66,6 +81,23 @@ namespace ManagerProject.Areas.Admin.Controllers
             };
 
             return Json(dataModel, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetTopStudentHaveMostPublicSubmission()
+        {
+            var userInfo = (UserLoginModel)Session[Helper.Commons.USER_SEESION_ADMIN];
+            var listPublic = dataAccess.GetSubmissionPublic(userInfo.Department_ID, "Admin");
+
+            var studentInDep = dataAccess.GetUsersByDep(userInfo.Department_ID);
+            List<ChartDataViewmodel> dataChart = new List<ChartDataViewmodel>();
+            foreach (var item in studentInDep)
+            {
+                ChartDataViewmodel a = new ChartDataViewmodel();
+                a.value = item.Username;
+                a.num = listPublic.Where(x => x.USER.User_ID == item.User_ID).Count();
+                dataChart.Add(a);
+            }
+            return Json(dataChart, JsonRequestBehavior.AllowGet);
         }
     }
 }

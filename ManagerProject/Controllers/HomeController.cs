@@ -1,4 +1,5 @@
-﻿using ManagerProject.Models;
+﻿using ManagerProject.Areas.Admin.Models;
+using ManagerProject.Models;
 using ModelEF.DataAccess;
 using ModelEF.EF;
 using System;
@@ -17,7 +18,8 @@ namespace ManagerProject.Controllers
 {
     public class HomeController : Controller
     {
-        private PostDataAccess dataAccess = new PostDataAccess();
+        private PostDataAccess dataAccess = new PostDataAccess(); 
+        private StatisticDataAccess StatisticDA = new StatisticDataAccess();
         public ActionResult Index()
         {
             if (Session[Helper.Commons.USER_SEESION] == null)
@@ -294,6 +296,53 @@ namespace ManagerProject.Controllers
                 Created_Date = x.Created_Date.ToString()
             }).ToList();
             return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult StatisticForGuest()
+        {
+            if (Session[Helper.Commons.USER_SEESION] == null)
+            {
+                return Redirect("/");
+            }
+            return View();
+        }
+
+        public ActionResult GetRateOfSubmissionOrNotSubmissionStatistic(int? DepID)
+        {
+            
+            var listPublic = StatisticDA.GetSubmissionPublic(DepID, "Guest").Count();
+            var listNotPublic = StatisticDA.GetSubmissionNotPublic(DepID, "Guest").Count();
+            int total = listPublic + listNotPublic;
+            float ratePublic, rateNotPublic;
+            if (total <= 0)
+            {
+                ratePublic = 0;
+                rateNotPublic = 0;
+            }
+            else
+            {
+                ratePublic = (listPublic * 100) / total;
+                rateNotPublic = (listNotPublic * 100) / total;
+            }
+             
+
+            var dataModel = new List<StatisticModel>();
+            if (total > 0)
+            {
+                dataModel.Add(new StatisticModel
+                {
+                    category = "Public",
+                    value = ratePublic,
+                    color = "#90cc38"
+                });
+                dataModel.Add(new StatisticModel
+                {
+                    category = "Not public",
+                    value = rateNotPublic,
+                    color = "#cb3414"
+                });
+            }        
+            return Json(dataModel, JsonRequestBehavior.AllowGet);
         }
     }
 }

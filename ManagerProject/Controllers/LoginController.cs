@@ -40,6 +40,10 @@ namespace ManagerProject.Controllers
             return View();
         }
 
+        public ActionResult LoginGuest() 
+        {
+            return View();
+        }
         [HttpPost]
         public ActionResult Login(LoginModel model)
         {
@@ -97,6 +101,9 @@ namespace ManagerProject.Controllers
             return Redirect("/");
         }
 
-
+        public ActionResult ChooseRole()
+        {
+            return View();
+        }
     }
 }

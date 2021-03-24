@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+.k-content {
+    position: relative;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: .2;
+    filter: alpha(opacity=60);
+    background-color: #6495ed;
+    text-align: center;
+}
+
+.overlay div {
+    position: relative;
+    font-size: 34px;
+    margin-top: -17px;
+    top: 50%;
+}
+</style>
+<div class="col-md-12 grid-margin" style="float: left">
+    <input id="ddl-Department" />
+    <div class="card">
+        <div class="p-4 border-bottom bg-light">
+            <h4 class="card-title mb-0">Statistics of the percentage of both public and non-public submissions</h4>
+        </div>
+        <div class="card-body">
+            <div class="k-content">
+                <div class="overlay"><div>No data available</div></div>
+                <div id="pie-chart"></div>
+            </div>
+            <div class="mr-5" id="mixed-chart-legend"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var dataPichart = [];
+    $("#ddl-Department").kendoDropDownList({
+        dataTextField: "ItemText",
+        dataValueField: "ItemValue",
+        change: function (e) {
+            var value = this.value();
+            GetRatePublicByDepartment(value)
+        }
+    });
+    $("#pie-chart").kendoChart({
+        dataSource: {
+            data: dataPichart
+        },
+        title: {
+            position: "bottom",
+            text: ""
+        },
+        legend: {
+            visible: false
+        },
+        chartArea: {
+            background: ""
+        },
+        seriesDefaults: {
+            labels: {
+                visible: true,
+                background: "transparent",
+                template: "#= category #: \n #= value#%"
+            }
+        },
+        series: [{
+            type: "pie",
+            startAngle: 150,
+            field: "value",
+            color: "color",
+
+        }],
+        tooltip: {
+            visible: true,
+            format: "{0}%"
+        },
+        dataBound: function (e) {
+            var view = e.sender.dataSource.view();
+            $(".overlay").toggle(view.length === 0);
+        }
+    });
+
+    function GetRatePublicByDepartment(id) {
+        $.ajax({
+            url: '@Url.Action("GetRateOfSubmissionOrNotSubmissionStatistic", "Home")',
+            type: "POST",
+            dataType: "json",
+            data: {
+                DepID: id
+            },
+            success: function (result) {
+                var chart = $("#pie-chart").data("kendoChart");
+                var dataSource = new kendo.data.DataSource({
+                    data: result
+                });
+                chart.setDataSource(dataSource);
+
+            }
+        });
+    }
+    function GetListDepartment() {
+        $.ajax({
+            url: "@Url.Action("GetListDepartment", "Home")",
+            type: "POST",
+            dataType: "json",
+            success: function (result) {
+                var dropdownlist = $("#ddl-Department").data("kendoDropDownList");
+                var dataSource = new kendo.data.DataSource({
+                    data: result
+                });
+                dropdownlist.setDataSource(dataSource);
+                dropdownlist.select(0);
+                GetRatePublicByDepartment(result[0].ItemValue)
+            }
+        });
+    }
+
+
+    GetListDepartment()
+</script>
+

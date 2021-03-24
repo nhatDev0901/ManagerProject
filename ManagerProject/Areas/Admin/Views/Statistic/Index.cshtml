@@ -8,20 +8,21 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center pb-4">
-                <h4 class="card-title mb-0">Sales Performance</h4>
+                <h4 class="card-title mb-0">Top 10 students have the most public submissions</h4>
                 <div id="line-traffic-legend"></div>
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <h2 class="mb-0 font-weight-medium">$5,341</h2>
-                    <p class="mb-5 text-muted">Sales</p>
+                    <h2 class="mb-0 font-weight-medium">  </h2>
+                    <p class="mb-5 text-muted">  </p>
                 </div>
                 <div class="col-md-3">
-                    <h2 class="mb-0 font-weight-medium">$1,334</h2>
-                    <p class="mb-5 text-muted">Profits</p>
+                    <h2 class="mb-0 font-weight-medium">  </h2>
+                    <p class="mb-5 text-muted">  </p>
                 </div>
             </div>
             <div class="k-content">
+                <div class="overlay"><div>No data available</div></div>
                 <div id="chart"></div>
             </div>
         </div>
@@ -46,6 +47,7 @@
                 </div>
             </div>
             <div class="k-content">
+                <div class="overlay"><div>No data available</div></div>
                 <div id="pie-chart"></div>
             </div>
         </div>
@@ -59,6 +61,7 @@
         </div>
         <div class="card-body">
             <div class="k-content">
+                <div class="overlay"><div>No data available</div></div>
                 <div id="chart2"></div>
             </div>
             <div class="mr-5" id="mixed-chart-legend"></div>
@@ -69,54 +72,52 @@
 <script>
     var dataPichart = [];
     $("#chart").kendoChart({
+        dataSource: {
+            transport: {
+                read: {
+                    url: '@Url.Action("GetTopStudentHaveMostPublicSubmission", "Statistic")',
+                    dataType: "json"
+                }
+            }
+        },
         title: {
-            text: "TIEU DE THONG KE"
+            text: ""
         },
         legend: {
-            position: "bottom"
-        },
-        chartArea: {
-            background: ""
+            position: "top"
         },
         seriesDefaults: {
-            type: "line",
-            style: "smooth"
+            type: "column"
         },
-        series: [{
-            name: "India",
-            data: [3.907, 7.943, 7.848, 9.284, 9.263, 9.801, 3.890, 8.238, 9.552, 6.855]
-        }, {
-            name: "World",
-            data: [1.988, 2.733, 3.994, 3.464, 4.001, 3.939, 1.333, -2.245, 4.339, 2.727]
-        }, {
-            name: "Russian Federation",
-            data: [4.743, 7.295, 7.175, 6.376, 8.153, 8.535, 5.247, -7.832, 4.3, 4.3]
-        }, {
-            name: "Haiti",
-            data: [-0.253, 0.362, -3.519, 1.799, 2.252, 3.343, 0.843, 2.877, -5.416, 5.590]
-        }],
-        valueAxis: {
-            labels: {
-                format: "{0}%"
-            },
-            line: {
-                visible: false
-            },
-            axisCrossingValue: -10
-        },
+        series:
+            [{
+                field: "num",
+                categoryField: "value"
+            }],
         categoryAxis: {
-            categories: [2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
+            labels: {
+                rotation: -90
+            },
             majorGridLines: {
                 visible: false
-            },
+            }
+        },
+        valueAxis: {
             labels: {
-                rotation: "auto"
+                format: "N0"
+            },
+            majorUnit: 5,
+            line: {
+                visible: false
             }
         },
         tooltip: {
             visible: true,
-            format: "{0}%",
-            template: "#= series.name #: #= value #"
+            format: "N0"
+        },
+        dataBound: function (e) {
+            var view = e.sender.dataSource.view();
+            $(".overlay").toggle(view.length === 0);
         }
     });
 
@@ -151,6 +152,10 @@
         tooltip: {
             visible: true,
             format: "{0}%"
+        },
+        dataBound: function (e) {
+            var view = e.sender.dataSource.view();
+            $(".overlay").toggle(view.length === 0);
         }
     });
 
@@ -238,9 +243,11 @@
 
         dataCollector.fetch(function () {
             $("#chart2").data("kendoChart").setDataSource(dataCollector.data());
-            $("#chart2").data("kendoChart").dataSource.pageSize(10);        
+            $("#chart2").data("kendoChart").dataSource.pageSize(10);
         });
     }
+
+   
     GetRatePublicByDepartment();
     GetNumberOfSubmissionsInDepartment();
 

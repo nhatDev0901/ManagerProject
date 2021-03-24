@@ -68,8 +68,12 @@ namespace ManagerProject.Areas.Manager.Controllers
             {
                 return Redirect("/Manager/");
             }
-            ViewBag.totalPublic = dataAccess.GetSubmissionPublic(null, "Manager").Count();
-            ViewBag.totalNonPublic = dataAccess.GetSubmissionNotPublic(null, "Manager").Count();
+            var totalPublic = dataAccess.GetSubmissionPublic(null, "Manager").Count();
+            var totalNonPublic = dataAccess.GetSubmissionNotPublic(null, "Manager").Count();
+
+            ViewBag.totalPublic = totalPublic;
+            ViewBag.totalNonPublic = totalNonPublic;
+            ViewBag.total = totalPublic + totalNonPublic;
             return View();
         }
 
@@ -79,23 +83,36 @@ namespace ManagerProject.Areas.Manager.Controllers
             var listPublic = dataAccess.GetSubmissionPublic(userInfo.Department_ID, "Manager").Count();
             var listNotPublic = dataAccess.GetSubmissionNotPublic(userInfo.Department_ID, "Manager").Count();
             int total = listPublic + listNotPublic;
-            float ratePublic = (listPublic * 100) / total;
-            float rateNotPublic = (listNotPublic * 100) / total;
+            float ratePublic, rateNotPublic;
+            if (total <= 0 )
+            {
+                ratePublic = 0;
+                rateNotPublic = 0;
+            }
+            else
+            {
+                ratePublic = (listPublic * 100) / total;
+                rateNotPublic = (listNotPublic * 100) / total;
+            }
+             
 
             var dataModel = new List<StatisticModel>();
-            dataModel.Add(new StatisticModel
+            if (total > 0)
             {
-                category = "Public",
-                value = ratePublic,
-                color = "#90cc38"
-            });
-
-            dataModel.Add(new StatisticModel
-            {
-                category = "Not public",
-                value = rateNotPublic,
-                color = "#cb3414"
-            });
+                dataModel.Add(new StatisticModel
+                {
+                    category = "Public",
+                    value = ratePublic,
+                    color = "#90cc38"
+                });
+                dataModel.Add(new StatisticModel
+                {
+                    category = "Not public",
+                    value = rateNotPublic,
+                    color = "#cb3414"
+                });
+            }
+           
             return Json(dataModel, JsonRequestBehavior.AllowGet);
         }
 
@@ -182,6 +199,21 @@ namespace ManagerProject.Areas.Manager.Controllers
             };
             var res = DAManager.SetDeadLine(infoDL);
             return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetNumSubmisstionEachDepartment()
+        {
+            var listDep = DAManager.GetListDepartment();
+            List<ChartDataViewmodel> dataChart = new List<ChartDataViewmodel>();
+            foreach (var item in listDep)
+            {
+                var data = DAManager.GetListSubmisstionForAdmin(item.Dep_ID);
+                ChartDataViewmodel a = new ChartDataViewmodel();
+                a.value = item.Dep_Name;
+                a.num = data.Count();
+                dataChart.Add(a);
+            }
+            return Json(dataChart, JsonRequestBehavior.AllowGet);
         }
     }
 }   

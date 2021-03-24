@@ -1,4 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@*<!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>@ViewBag.Title</title>
+    </head>
+    <body>
+        <div>
+            @RenderBody()
+        </div>
+    </body>
+    </html>*@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -60,8 +73,8 @@
 <body>
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
-            <div class="content-wrapper d-flex align-items-center auth auth-bg-manage theme-one">
-
+            <div class="content-wrapper d-flex align-items-center auth auth-bg-1 theme-one">
+                
                 @RenderBody()
             </div>
             <!-- content-wrapper ends -->

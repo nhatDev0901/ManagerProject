@@ -19,7 +19,7 @@ namespace ModelEF.DataAccess
         {
             var list = new List<SUBMITTION>();
             var model = db.SUBMITTIONS.Join(db.USERS, x => x.Created_By, y => y.User_ID, (x, y) => x).ToList();
-            if (role == "Admin")
+            if (role == "Admin" || role == "Guest")
             {                
                  list = model.Where(x => x.USER.Dep_ID == DepID && x.IsPublic == 1).ToList();
             }
@@ -35,7 +35,7 @@ namespace ModelEF.DataAccess
         {
             var model = db.SUBMITTIONS.Join(db.USERS, x => x.Created_By, y => y.User_ID, (x, y) => x).ToList();
             var list = new List<SUBMITTION>();
-            if (role == "Admin")
+            if (role == "Admin" || role == "Guest")
             {
                 list = model.Where(x => x.USER.Dep_ID == DepID && x.IsPublic == 0).ToList();
             }
@@ -70,7 +70,13 @@ namespace ModelEF.DataAccess
                     value = db.SUBMITTIONS.Where(x => x.Created_By == item.User_ID).Count()
                 });
             }
-            return model;
+            return model.OrderByDescending(x => x.value).Take(10).ToList();
+        }
+
+        public List<USER> GetUsersByDep(int? DepID)
+        {
+            var data = db.USERS.Where(x => x.Dep_ID == DepID && x.Role_ID == 1).ToList();
+            return data;
         }
     }
 }

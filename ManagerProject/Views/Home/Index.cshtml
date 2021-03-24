@@ -21,12 +21,12 @@
         </li>
     }
 
-    @*<li class="nav-item">
-            <a class="nav-link" href="@Url.Action("EmailNotification","Home")">
-                <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">SEND EMAIL TEST</span>
-            </a>
-        </li>*@
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.Action("StatisticForGuest","Home")">
+            <i class="menu-icon typcn typcn-shopping-bag"></i>
+            <span class="menu-title">STATISTIC</span>
+        </a>
+    </li>
 }
 @if (userSession.RoleID != 1)
 {
@@ -54,48 +54,6 @@
 <script>
 
     $(function () {
-
-        @*var orderData = [];
-        if (@Html.Raw(userSession.RoleID) == 1) {
-
-
-            console.log('STUDENT')
-        } else {
-            var Dep_ID = $("#ddl-Department").val();
-
-            $("#ordersGrid").kendoGrid({
-                dataSource: gridDataSourceGuest,
-                height: 643,
-                pageable: {
-                    refresh: false,
-                    pageSizes: [10, 50, 100],
-                },
-                sortable: true,
-                filterable: false,
-                columns: [{
-                    field: "Sub_ID",
-                    title: "ID",
-                    width: 160
-                }, {
-                    field: "Sub_Title",
-                    width: 160,
-                    title: "TITLE"
-                }, {
-                    field: "PublicStatus",
-                    title: "STATUS",
-                    width: 200,
-
-                }, {
-                    field: "Created_Date",
-                    title: "CREATED DATE",
-                    format: "{0:dd MMMM yyyy}"
-                }, {
-                    field: "Description",
-                    title: "DESCRIPTION"
-                }]
-            });
-            console.log('GUEST>>', gridDataSourceGuest)
-        }*@
         var Dep_ID = $("#ddl-Department").val();
         var gridDataSource;
         if (@Html.Raw(userSession.RoleID) == 1) {
@@ -295,6 +253,9 @@
                 });
                 dropdownlist.setDataSource(dataSource);
                 dropdownlist.select(0);
+
+                console.log(result[0].ItemValue)
+                GetListSMGuest(result[0].ItemValue)
             }
         });
     }
