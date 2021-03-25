@@ -62,7 +62,7 @@
         tools: []
     });
     var editor = $("#input-desc").data("kendoEditor");
-    editor.value('@Html.Raw(SubmisstionInfo.Description)');
+    editor.value(`@Html.Raw(SubmisstionInfo.Description).ToHtmlString()`);
 
 
     $('input[name=fileImage]').kendoUpload({

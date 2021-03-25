@@ -265,5 +265,26 @@ namespace ModelEF.DataAccess
         {
             return db.DEADLINEs.FirstOrDefault();
         }
+
+        public List<COMMENT> GetListCommentBySubID(int subID)
+        {
+            var data = db.COMMENTS.Where(x => x.Sub_ID == subID).ToList();
+            return data;
+        }
+
+        public int AddComment(COMMENT input)
+        {
+            try
+            {
+                db.COMMENTS.Add(input);
+                db.SaveChanges();
+
+                return 1;
+            }
+            catch (Exception e)
+            {
+                return -1;               
+            }
+        }
     }
 }

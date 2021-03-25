@@ -662,6 +662,7 @@
     <Content Include="Views\Shared\_LayoutChooseRole.cshtml" />
     <Content Include="Views\Home\StatisticForGuest.cshtml" />
     <Content Include="Views\Login\LoginGuest.cshtml" />
+    <Content Include="Views\Home\Comment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

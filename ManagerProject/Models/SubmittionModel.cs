@@ -66,4 +66,15 @@ namespace ManagerProject.Models
         public int num { get; set; }
         public string value { get; set; }
     }
+
+    public class CommentViewModel
+    {
+        public int CommentID { get; set; }
+        public string CommentContent { get; set; }
+        public int? UserID { get; set; }
+        public string Username { get; set; }
+        public int? SubID { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+    }
 }

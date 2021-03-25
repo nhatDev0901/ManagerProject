@@ -1,0 +1,568 @@
+﻿@model List<ManagerProject.Models.CommentViewModel>
+@{
+    ViewBag.Title = "Comments";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .widget {
+        position: relative;
+        margin-bottom: 30px;
+        padding: 0px 20px;
+        background: #fff;
+        border-radius: 3px;
+    }
+
+    .widget-controls {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        padding: 14px;
+        font-size: 12px;
+    }
+
+        .widget-controls > a {
+            padding: 1px 4px;
+            border-radius: 4px;
+            color: rgba(0,0,0,0.4);
+            -webkit-transition: color 0.15s ease-in-out;
+            -o-transition: color 0.15s ease-in-out;
+            transition: color 0.15s ease-in-out;
+            color: #fff;
+        }
+
+    .text-white {
+        color: #fff;
+    }
+
+    .bg-body, .bg-body-light,
+    .bg-gray, .bg-gray-transparent,
+    .bg-transparent, .bg-primary,
+    .bg-success, .bg-warning,
+    .bg-danger, .bg-info {
+        -webkit-transition: background-color 0.15s ease-in-out;
+        -o-transition: background-color 0.15s ease-in-out;
+        transition: background-color 0.15s ease-in-out;
+    }
+
+    .bg-warning {
+        background-color: #f0b518;
+    }
+
+    .bg-info {
+        background: #39bbdb;
+    }
+
+    .widget-top-overflow {
+        margin-top: -15px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+    }
+
+    .widget-top-overflow, .widget-middle-overflow {
+        position: relative;
+        margin: 0 -20px;
+    }
+
+    .windget-padding-md {
+        padding: 15px 20px;
+    }
+
+    .tags {
+        padding-left: 0;
+        list-style: none;
+    }
+
+        .tags > li {
+            float: left;
+            margin: 3px;
+        }
+
+    h3, .h3 {
+        font-size: 24px;
+    }
+
+    .tags > li > a {
+        padding: 2px 8px;
+        font-size: 13px;
+        border-radius: 6px;
+        border: 1px solid white;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .mt-n-lg {
+        margin-top: -30px;
+    }
+
+    .post-user {
+        position: relative;
+    }
+
+    .mr {
+        margin-right: 15px;
+    }
+
+    .thumb-xs, .thumb-sm, .thumb-lg, .thumb {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .thumb-lg {
+        width: 60px;
+    }
+
+        .thumb-xs img, .thumb-sm img, .thumb-lg img, .thumb img {
+            height: auto;
+            max-width: 100%;
+            vertical-align: middle;
+        }
+
+    .post-user img {
+        border: 3px solid white;
+    }
+
+    .text-light {
+        opacity: .8;
+    }
+
+    p {
+        margin: 0 0 10px;
+    }
+
+    .widget > footer {
+        margin: 0 -20px -15px;
+        padding: 15px 20px;
+    }
+
+    .bg-body, .bg-body-light, .bg-gray,
+    .bg-gray-transparent,
+    .bg-transparent, .bg-primary,
+    .bg-success, .bg-warning,
+    .bg-danger, .bg-info {
+        -webkit-transition: background-color 0.15s ease-in-out;
+        -o-transition: background-color 0.15s ease-in-out;
+        transition: background-color 0.15s ease-in-out;
+    }
+   /* --------------------------------------------------------------------*/
+   
+    #comments {
+        box-shadow: 0 -1px 6px 1px rgba(0,0,0,0.1);
+        background-color: #FFFFFF;
+    }
+
+        #comments form {
+            margin-bottom: 30px;
+        }
+
+        #comments .btn {
+            margin-top: 7px;
+        }
+
+        #comments form fieldset {
+            clear: both;
+        }
+
+        #comments form textarea {
+            height: 100px;
+        }
+
+        #comments .media {
+            border-top: 1px dashed #DDDDDD;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+            #comments .media > .pull-left {
+                margin-right: 20px;
+            }
+
+            #comments .media img {
+                max-width: 100px;
+            }
+
+            #comments .media h4 {
+                margin: 0 0 10px;
+            }
+
+                #comments .media h4 span {
+                    font-size: 14px;
+                    float: right;
+                    color: #999999;
+                }
+
+            #comments .media p {
+                margin-bottom: 15px;
+                text-align: justify;
+            }
+
+        #comments .media-detail {
+            margin: 0;
+        }
+
+            #comments .media-detail li {
+                color: #AAAAAA;
+                font-size: 12px;
+                padding-right: 10px;
+                font-weight: 600;
+            }
+
+            #comments .media-detail a:hover {
+                text-decoration: underline;
+            }
+
+            #comments .media-detail li:last-child {
+                padding-right: 0;
+            }
+
+            #comments .media-detail li i {
+                color: #666666;
+                font-size: 15px;
+                margin-right: 10px;
+            }
+
+
+
+    .thumb img {
+        height: auto;
+        max-width: 100%;
+        vertical-align: middle;
+    }
+
+    .post-user img {
+        border: 3px solid white;
+    }
+
+    .widget {
+        position: relative;
+        margin-bottom: 30px;
+        padding: 15px 20px;
+        background: #fff;
+        border-radius: 3px;
+    }
+
+    .widget-controls {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        padding: 14px;
+        font-size: 12px;
+    }
+
+        .widget-controls > a {
+            padding: 1px 4px;
+            border-radius: 4px;
+            color: rgba(0,0,0,0.4);
+            -webkit-transition: color 0.15s ease-in-out;
+            -o-transition: color 0.15s ease-in-out;
+            transition: color 0.15s ease-in-out;
+        }
+
+    .thumb {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        width: 48px;
+    }
+
+        .thumb img {
+            height: auto;
+            max-width: 100%;
+            vertical-align: middle;
+        }
+
+    .post-user img {
+        border: 3px solid white;
+    }
+
+    .fs-mini {
+        font-size: 13px;
+    }
+
+    .bg-danger, .bg-info {
+        -webkit-transition: background-color 0.15s ease-in-out;
+        -o-transition: background-color 0.15s ease-in-out;
+        transition: background-color 0.15s ease-in-out;
+    }
+
+    .bg-danger {
+        background-color: #dd5826;
+    }
+
+    .bg-info {
+        background-color: #39bbdb;
+        ;
+    }
+
+    .text-white {
+        color: #fff;
+    }
+
+    .widget-middle-overflow {
+        position: relative;
+        margin: 0 -20px;
+    }
+
+    .windget-padding-md {
+        padding: 15px 20px;
+    }
+
+    .mb-lg {
+        margin-bottom: 30px;
+    }
+
+
+
+
+
+    .be-comment-block {
+        margin-bottom: 50px !important;
+        border: 1px solid #edeff2;
+        border-radius: 2px;
+        padding: 50px 70px;
+        border: 1px solid #ffffff;
+    }
+
+    .comments-title {
+        font-size: 16px;
+        color: #262626;
+        margin-bottom: 15px;
+        font-family: 'Conv_helveticaneuecyr-bold';
+    }
+
+    .be-img-comment {
+        width: 60px;
+        height: 60px;
+        float: left;
+        margin-bottom: 15px;
+    }
+
+    .be-ava-comment {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+
+    .be-comment-content {
+        margin-left: 80px;
+    }
+
+        .be-comment-content span {
+            display: inline-block;
+            width: 49%;
+            margin-bottom: 15px;
+        }
+
+    .be-comment-name {
+        font-size: 13px;
+        font-family: 'Conv_helveticaneuecyr-bold';
+    }
+
+    .be-comment-content a {
+        color: #383b43;
+    }
+
+    .be-comment-content span {
+        display: inline-block;
+        width: 49%;
+        margin-bottom: 15px;
+    }
+
+    .be-comment-time {
+        text-align: right;
+    }
+
+    .be-comment-time {
+        font-size: 11px;
+        color: #b4b7c1;
+    }
+
+    .be-comment-text {
+        font-size: 13px;
+        line-height: 18px;
+        color: #7a8192;
+        display: block;
+        background: #f6f6f7;
+        border: 1px solid #edeff2;
+        padding: 15px 20px 20px 20px;
+    }
+</style>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="widget-body">
+    <div class="widget-top-overflow windget-padding-md clearfix bg-warning text-white">
+        <h3 class="mt-lg mb-lg">
+            @Html.Raw(ViewBag.TitleSub)
+        </h3>
+        <ul class="tags text-white pull-right">
+            <li><a href="#">features</a></li>
+        </ul>
+    </div>
+    <div class="post-user mt-n-lg">
+        <span class="thumb-lg pull-left mr">
+            <img class="img-circle" avatar="@Html.Raw(ViewBag.CreatedBy)">
+        </span>
+        <h5 class="mt-sm fw-normal text-white">@Html.Raw(ViewBag.CreatedBy)</h5>
+        <p class="fs-mini text-muted"><time>@Html.Raw(ViewBag.CreatedDate)</time>
+    </div>
+    <p class="fs-mini m">
+        @Html.Raw(ViewBag.Description)
+    </p>
+</div>
+<section class="content-item" id="comments">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <form>
+                    <h3 class="pull-left">New Comment</h3>
+                    <input type="button" class="btn btn-normal pull-right" value="Submit" onclick="AddComment()" />
+                    <fieldset>
+                        <div class="row">
+                            <div class="form-group col-xs-12 col-sm-9 col-lg-12">
+                                <textarea class="form-control" id="message" placeholder="Your message" required=""></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                @if (Model.Count() > 0)
+                {
+                    <h1 class="comments-title">Comments (@Model.Count())</h1>
+                }
+
+                @foreach (var item in Model)
+                {
+                    <div class="be-comment">
+                        <div class="be-img-comment">
+                            <a href="#">
+                                <img class="be-ava-comment" avatar="@Html.Raw(item.Username)">
+                            </a>
+                        </div>
+                        <div class="be-comment-content">
+
+                            <span class="be-comment-name">
+                                <a href="#"><strong>@Html.Raw(item.CreatedBy)</strong></a>
+                            </span>
+                            <span class="be-comment-time">
+                                <i class="fa fa-clock-o"></i>
+                                @Html.Raw(item.CreatedDate.Value.ToString("MMM dd, yyyy")) at @Html.Raw(item.CreatedDate.Value.ToString("HH:mm tt"))
+                            </span>
+
+                            <p class="be-comment-text">
+                                @Html.Raw(item.CommentContent).ToHtmlString()
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function AddComment() {
+        var comment = $('#message').val();
+        $.ajax({
+            url: "@Url.Action("AddComment", "Home")",
+            type: "POST",
+            dataType: "json",
+            data: {
+                SubID: '@Html.Raw(ViewBag.SubID)',
+                Comment: comment
+            },
+            success: function (result) {
+                location.href = '@Url.Action("Comment", "Home", new { SubID = ViewBag.SubID })'
+            }
+        });
+    }
+
+
+    (function (w, d) {
+
+
+        function LetterAvatar(name, size) {
+
+            name = name || '';
+            size = size || 60;
+
+            var colours = [
+                "#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50",
+                "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"
+            ],
+
+                nameSplit = String(name).toUpperCase().split(' '),
+                initials, charIndex, colourIndex, canvas, context, dataURI;
+
+
+            if (nameSplit.length == 1) {
+                initials = nameSplit[0] ? nameSplit[0].charAt(0) : '?';
+            } else {
+                initials = nameSplit[0].charAt(0) + nameSplit[1].charAt(0);
+            }
+
+            if (w.devicePixelRatio) {
+                size = (size * w.devicePixelRatio);
+            }
+
+            charIndex = (initials == '?' ? 72 : initials.charCodeAt(0)) - 64;
+            colourIndex = charIndex % 20;
+            canvas = d.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            context = canvas.getContext("2d");
+
+            context.fillStyle = colours[colourIndex - 1];
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.font = Math.round(canvas.width / 2) + "px Arial";
+            context.textAlign = "center";
+            context.fillStyle = "#FFF";
+            context.fillText(initials, size / 2, size / 1.5);
+
+            dataURI = canvas.toDataURL();
+            canvas = null;
+
+            return dataURI;
+        }
+
+        LetterAvatar.transform = function () {
+
+            Array.prototype.forEach.call(d.querySelectorAll('img[avatar]'), function (img, name) {
+                name = img.getAttribute('avatar');
+                img.src = LetterAvatar(name, img.getAttribute('width'));
+                img.removeAttribute('avatar');
+                img.setAttribute('alt', name);
+            });
+        };
+
+
+        // AMD support
+        if (typeof define === 'function' && define.amd) {
+
+            define(function () { return LetterAvatar; });
+
+            // CommonJS and Node.js module support.
+        } else if (typeof exports !== 'undefined') {
+
+            // Support Node.js specific `module.exports` (which can be a function)
+            if (typeof module != 'undefined' && module.exports) {
+                exports = module.exports = LetterAvatar;
+            }
+
+            // But always support CommonJS module 1.1.1 spec (`exports` cannot be a function)
+            exports.LetterAvatar = LetterAvatar;
+
+        } else {
+
+            window.LetterAvatar = LetterAvatar;
+
+            d.addEventListener('DOMContentLoaded', function (event) {
+                LetterAvatar.transform();
+            });
+        }
+
+    })(window, document);
+</script>
+

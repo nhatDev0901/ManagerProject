@@ -21,12 +21,16 @@
         </li>
     }
 
-    <li class="nav-item">
-        <a class="nav-link" href="@Url.Action("StatisticForGuest","Home")">
-            <i class="menu-icon typcn typcn-shopping-bag"></i>
-            <span class="menu-title">STATISTIC</span>
-        </a>
-    </li>
+    @if (userSession.RoleID != 1)
+    {
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("StatisticForGuest","Home")">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">STATISTIC</span>
+            </a>
+        </li>
+    }
+
 }
 @if (userSession.RoleID != 1)
 {
@@ -137,6 +141,7 @@
             },
             sortable: true,
             filterable: false,
+            resizable: true,
             columns: [{
                 field: "Sub_ID",
                 title: "ID",
@@ -144,6 +149,7 @@
             }, {
                 field: "Sub_Title",
                 width: 160,
+                    template: "<a  class='text-blue text-center' href='javascript:void(0)' onclick='fnComment(#:Sub_ID#)'>#:Sub_Title# </a>",
                 title: "TITLE"
             }, {
                 field: "Department_Name",
@@ -161,7 +167,8 @@
                 format: "{0:dd MMMM yyyy}"
             }, {
                 field: "Description",
-                title: "DESCRIPTION"
+                    title: "DESCRIPTION",
+                    width: 700
             }, {
                 template: kendo.template($("#status-template").html()),
                 width: 100,
@@ -217,7 +224,7 @@
     }
     // popup delete
     function popupDelete(id, title) {
-        $('#wndDeleteContent').load("/Home/DeleteContribution/?Subid=" + id + "&title=" + title, function () {
+        $('#wndDeleteContent').load("/Home/DeleteContribution/?Subid=" + id , function () {
             $("#popupDeleteWindows").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
         });
     }
@@ -229,7 +236,9 @@
         });
     }
 
-
+    function fnComment(id) {
+        location.href = '/Home/Comment?SubID=' + id;
+    }
     /////// Role GUEST/////////
 
     $("#ddl-Department").kendoDropDownList({

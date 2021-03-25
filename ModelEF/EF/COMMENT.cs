@@ -17,6 +17,10 @@ namespace ModelEF.EF
         public int? User_ID { get; set; }
 
         public int? Sub_ID { get; set; }
+        public DateTime? Created_Date { get; set; }
+
+        [StringLength(50)]
+        public string Created_By { get; set; } 
 
         public virtual SUBMITTION SUBMITTION { get; set; }
 
