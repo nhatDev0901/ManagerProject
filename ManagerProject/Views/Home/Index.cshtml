@@ -54,6 +54,13 @@
         <a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2" onclick="popupDelete('#:Sub_ID#', '#:Sub_Title#')"><i class="fa fa-trash" aria-hidden="true"></i></a>
     </div>
 </script>
+<script id="nhatoccho" type="text/x-kendo-template">
+    #if(@userSession.RoleID == 1){#
+    <a class='text-blue text-center' href='javascript:void(0)' onclick='fnComment(#:Sub_ID#)'>#:Sub_Title# </a>
+    #}else{#
+    #:Sub_Title#
+    #}#
+</script>
 
 <script>
 
@@ -131,6 +138,7 @@
                 }
             });
         }
+
         $("#ordersGrid").kendoGrid({
             dataSource: gridDataSource,
 
@@ -149,7 +157,9 @@
             }, {
                 field: "Sub_Title",
                 width: 160,
-                    template: "<a  class='text-blue text-center' href='javascript:void(0)' onclick='fnComment(#:Sub_ID#)'>#:Sub_Title# </a>",
+                    //template: "<a  class='text-blue text-center' href='javascript:void(0)' onclick='fnComment(#:Sub_ID#)'>#:Sub_Title# </a>",
+                    template: kendo.template($("#nhatoccho").html()),
+
                 title: "TITLE"
             }, {
                 field: "Department_Name",
