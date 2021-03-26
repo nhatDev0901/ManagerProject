@@ -127,16 +127,23 @@
     $("#btn-setDateline").click(function () {
         var startDateLine = ($("#deadline-start").data("kendoDatePicker").value()).toJSON();
         var endDateLine = ($("#deadline-end").data("kendoDatePicker").value()).toJSON();
+        var title = $("#input-title-deadline").val();
         $.ajax({
             url: "@Url.Action("SetDeadLine", "ManagerHome")",
             type: "POST",
             dataType: "json",
             data: {
                 start: startDateLine,
-                end: endDateLine
+                end: endDateLine,
+                title: title
             },
             success: function (result) {
-
+                if (result == 1) {
+                    alert("Set deadline sucessful!")
+                    location.reload();
+                } else {
+                    alert("Set deadline fail!")
+                }
             }
         });
     })

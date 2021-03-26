@@ -176,26 +176,35 @@ namespace ManagerProject.Areas.Manager.Controllers
                 };
             }
             int checkDeadline = 0;
-            if (today >= deadline.DeadLine_Start && today <= deadline.DeadLine_End)
+            if (deadline !=  null)
             {
-                checkDeadline = 1;
+                if (today >= deadline.DeadLine_Start && today <= deadline.DeadLine_End)
+                {
+                    checkDeadline = 1;
+                }
+                else
+                {
+                    checkDeadline = 2;
+                }
             }
             else
             {
                 checkDeadline = 2;
             }
+           
             ViewBag.CheckDeadLine = checkDeadline;
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult SetDeadLine(DateTime? start, DateTime? end)
+        public ActionResult SetDeadLine(DateTime? start, DateTime? end, string title)
         {
             var infoDL = new DEADLINE()
             {
                 DeadLine_Start = start,
                 DeadLine_End = end,
-                Created_Date = DateTime.Now
+                Created_Date = DateTime.Now,
+                DeadLine_Content = title
             };
             var res = DAManager.SetDeadLine(infoDL);
             return Json(res, JsonRequestBehavior.AllowGet);

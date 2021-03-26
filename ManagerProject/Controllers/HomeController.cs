@@ -30,14 +30,22 @@ namespace ManagerProject.Controllers
             DateTime now = DateTime.Now;
             int checkDeadline = 0;
             var deadLineAvailable = dataAccess.GetDeadLine();
-            if (now >= deadLineAvailable.DeadLine_Start && now <= deadLineAvailable.DeadLine_End)
+            if (deadLineAvailable != null)
             {
-                checkDeadline = 1;
+                if (now >= deadLineAvailable.DeadLine_Start && now <= deadLineAvailable.DeadLine_End)
+                {
+                    checkDeadline = 1;
+                }
+                else
+                {
+                    checkDeadline = 2;
+                }
             }
             else
             {
                 checkDeadline = 2;
             }
+            
             ViewBag.CheckDeadLine = checkDeadline;
             return View();
         }
