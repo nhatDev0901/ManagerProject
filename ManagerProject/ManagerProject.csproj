@@ -636,6 +636,37 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Uploads\FilesSubmitted\DangKhoa_SM22_637523618327864300.png" />
+    <Content Include="Uploads\FilesSubmitted\DangKhoa_SM23_637523618519426109.png" />
+    <Content Include="Uploads\FilesSubmitted\DangKhoa_SM24_637523618708627614.png" />
+    <Content Include="Uploads\FilesSubmitted\DangKhoa_SM25_637523619018491415.png" />
+    <Content Include="Uploads\FilesSubmitted\DucNhat_SM1_637523540891034315.jpg" />
+    <Content Include="Uploads\FilesSubmitted\DucNhat_SM1_637523540891513032.jpg" />
+    <Content Include="Uploads\FilesSubmitted\DucNhat_SM1_637523540891652671.jpg" />
+    <Content Include="Uploads\FilesSubmitted\DuyManh_SM14_637523615542782981.png" />
+    <Content Include="Uploads\FilesSubmitted\DuyManh_SM15_637523615791506606.png" />
+    <Content Include="Uploads\FilesSubmitted\DuyManh_SM16_637523615962964383.png" />
+    <Content Include="Uploads\FilesSubmitted\DuyManh_SM17_637523616305942405.png" />
+    <Content Include="Uploads\FilesSubmitted\HungDung_SM6_637523607137012973.png" />
+    <Content Include="Uploads\FilesSubmitted\HungDung_SM7_637523607724092423.png" />
+    <Content Include="Uploads\FilesSubmitted\HungDung_SM8_637523609291396476.png" />
+    <Content Include="Uploads\FilesSubmitted\HungDung_SM9_637523609624446854.png" />
+    <Content Include="Uploads\FilesSubmitted\nhat_SM10_637517470622158254.jpg" />
+    <Content Include="Uploads\FilesSubmitted\nhat_SM10_637517470623131241.jpg" />
+    <Content Include="Uploads\FilesSubmitted\nhat_SM10_637517470623250940.jpg" />
+    <Content Include="Uploads\FilesSubmitted\nhat_SM6_637513290128714359.png" />
+    <Content Include="Uploads\FilesSubmitted\QuangBinh_SM2_637523604805986076.png" />
+    <Content Include="Uploads\FilesSubmitted\QuangBinh_SM3_637523605312566330.png" />
+    <Content Include="Uploads\FilesSubmitted\QuangBinh_SM4_637523605948276353.png" />
+    <Content Include="Uploads\FilesSubmitted\QuangBinh_SM5_637523606369937907.png" />
+    <Content Include="Uploads\FilesSubmitted\QuangHai_SM10_637523613592172830.png" />
+    <Content Include="Uploads\FilesSubmitted\QuangHai_SM11_637523613800608922.png" />
+    <Content Include="Uploads\FilesSubmitted\QuangHai_SM12_637523614027242472.png" />
+    <Content Include="Uploads\FilesSubmitted\QuangHai_SM13_637523614240601799.png" />
+    <Content Include="Uploads\FilesSubmitted\VanLam_SM18_637523617021815797.png" />
+    <Content Include="Uploads\FilesSubmitted\VanLam_SM19_637523617354738157.png" />
+    <Content Include="Uploads\FilesSubmitted\VanLam_SM20_637523617632604423.png" />
+    <Content Include="Uploads\FilesSubmitted\VanLam_SM21_637523617892893318.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -663,6 +694,9 @@
     <Content Include="Views\Home\StatisticForGuest.cshtml" />
     <Content Include="Views\Login\LoginGuest.cshtml" />
     <Content Include="Views\Home\Comment.cshtml" />
+    <Content Include="Uploads\FilesSubmitted\nhat_SM11_637517474671672430.DOC" />
+    <Content Include="Uploads\FilesSubmitted\nhat_SM11_637517474671923790.DOC" />
+    <Content Include="Uploads\FilesSubmitted\nhat_SM5_637522641134628490.DOCX" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -671,7 +705,6 @@
     <Folder Include="Areas\Manager\Data\" />
     <Folder Include="Areas\Manager\Models\" />
     <Folder Include="Areas\Manager\ViewModels\" />
-    <Folder Include="Uploads\FilesSubmitted\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

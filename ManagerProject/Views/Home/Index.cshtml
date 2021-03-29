@@ -49,12 +49,15 @@
 </div>
 
 <script id="status-template" type="text/x-kendo-template">
+    #if(@userSession.RoleID == 1){#
     <div class="d-flex w-100 text-center">
         <a title="Edit" class="button buttonEdit rounded-circle btn-i-center" onclick="popupEdit('#:Sub_ID#')"><i class="fa fa-edit" aria-hidden="true"></i></a>
         <a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2" onclick="popupDelete('#:Sub_ID#', '#:Sub_Title#')"><i class="fa fa-trash" aria-hidden="true"></i></a>
     </div>
+    #}#
+
 </script>
-<script id="nhatoccho" type="text/x-kendo-template">
+<script id="templateComment" type="text/x-kendo-template">
     #if(@userSession.RoleID == 1){#
     <a class='text-blue text-center' href='javascript:void(0)' onclick='fnComment(#:Sub_ID#)'>#:Sub_Title# </a>
     #}else{#
@@ -158,7 +161,7 @@
                 field: "Sub_Title",
                 width: 160,
                     //template: "<a  class='text-blue text-center' href='javascript:void(0)' onclick='fnComment(#:Sub_ID#)'>#:Sub_Title# </a>",
-                    template: kendo.template($("#nhatoccho").html()),
+                    template: kendo.template($("#templateComment").html()),
 
                 title: "TITLE"
             }, {

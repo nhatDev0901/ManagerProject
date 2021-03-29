@@ -29,9 +29,17 @@
 
 <script id="status-template" type="text/x-kendo-template">
     <div class="d-flex w-100 text-center">
-        <a title="Edit" class="button buttonEdit rounded-circle btn-i-center" onclick="popupEdit()"><i class="fa fa-edit" aria-hidden="true"></i></a>
-        <a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2" onclick="popupDelete()"><i class="fa fa-trash" aria-hidden="true"></i></a>
+        <a title="Edit" class="button buttonEdit rounded-circle btn-i-center" onclick="popupEdit('#:Sub_ID#')"><i class="fa fa-edit" aria-hidden="true"></i></a>
+        @*<a title="Remove" class="button buttonEdit rounded-circle btn-i-center ml-2" onclick="popupDelete()"><i class="fa fa-trash" aria-hidden="true"></i></a>*@
     </div>
+</script>
+
+<script id="templatePublic" type="text/x-kendo-template">
+    #if(IsPublic != 1){#
+    <div style="color: red">#:PublicStatus#</div>
+    #}else{#
+    #:PublicStatus#
+    #}#
 </script>
 
 <script>
@@ -150,6 +158,7 @@
                 field: "PublicStatus",
                 title: "STATUS",
                 width: 200,
+                template: kendo.template($("#templatePublic").html()),
             },
             {
                 field: "Created_Date",
@@ -158,7 +167,11 @@
             },
             {
                 field: "Description",
-                title: "DESCRIPTION"
+                title: "DESCRIPTION",
+                width: 700
+            }, {
+                template: kendo.template($("#status-template").html()),
+                width: 100,
             }]
         });
 
@@ -196,8 +209,8 @@
     });
 
     // pop up edit
-    function popupEdit() {
-        $('#wndEditContent').load("/Admin/AdminHome/EditContribution/", function () {
+    function popupEdit(id) {
+        $('#wndEditContent').load("/Admin/AdminHome/EditContribution/?Subid=" + id, function () {
             $("#popupEditWindows").data("kendoWindow").center().open().element.closest(".k-window").css({ top: 20 });
         });
     }

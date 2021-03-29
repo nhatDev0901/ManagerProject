@@ -46,11 +46,36 @@ namespace ManagerProject.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult EditContribution()
+        public ActionResult EditContribution(int Subid)
         {
+            var data = dataAccess.GetSubmittionByID(Subid);
+            var model = new SubmittionModel()
+            {
+                Sub_ID = data.Sub_ID,
+                Sub_Title = data.Sub_Title,
+                Description = data.Sub_Description,
+                SubCode = data.Sub_Code
+            };
+            ViewBag.SubmissionInfo = model;
             return PartialView("_EditContribution");
         }
 
+        public ActionResult EditSubmission(ParamInputCreateModel param)
+        {
+            int res = 0;
+            var userInfor = (UserLoginModel)Session[Helper.Commons.USER_SEESION_ADMIN];
+            var inforSubmit = new SUBMITTION()
+            {
+                Sub_ID = param.Sub_ID,
+                Sub_Title = param.title,
+                Sub_Description = param.description,
+                Updated_Date = DateTime.Now,
+                Updated_By = userInfor.UserID
+            };
+            res = dataAccess.EditSubmission(inforSubmit);
+
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult DeleteContribution()
         {
             return PartialView("_DeleteContribution");

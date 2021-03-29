@@ -1,4 +1,7 @@
-﻿
+﻿@using ManagerProject.Models
+@{
+    var SubmisstionInfo = (SubmittionModel)ViewBag.SubmissionInfo;
+}
 <div class="modal-body">
     <div class="row">
         <div class="col-lg-12 col-md-12">
@@ -7,7 +10,7 @@
                     <label>TITLE</label><span class="input-required">*</span>
                 </div>
                 <div class="col-lg-8 col-md-8">
-                    <input type="text" name="name" value="COURSE WORK  1" id="input-title" style="width: 100%;" />
+                    <input type="text" name="name" value="@Html.Raw(SubmisstionInfo.Sub_Title)" id="input-title" style="width: 100%;" />
                 </div>
             </div>
             <br />
@@ -16,27 +19,28 @@
                     <label>DESCRIPTION</label><span class="input-required">*</span>
                 </div>
                 <div class="col-lg-8 col-md-8">
-                    <input type="text" name="name" value="MLEM MLEM MLEM MLEM MLEM MLEEMMMM" id="input-des" style="width: 100%;" />
+                    @*<input type="text" name="name" value="@Html.Raw(SubmisstionInfo.Sub_Title)" id="input-des" style="width: 100%;" />*@
+                    <textarea id="input-desc" required style="width: 100%;"></textarea>
                 </div>
             </div>
             <br />
-            <div class="row">
+            @*<div class="row">
                 <div class="col-lg-4 col-md-4">
                     <label>UOLOAD FILES</label><span class="input-required">*</span>
                 </div>
                 <div class="col-lg-8 col-md-8">
                     <input name="fileImage" multiple="multiple" id="files" type="file" aria-label="files" />
-                    @*@Html.TextBoxFor(x => x.File, new { @class = "form-control", type = "file" })*@<br />
                     <span class="text-secondary font-italic">File format .jpeg, .jpg, .png., .doc. File size max 5MB.</span>
                 </div>
             </div>
-            <br />
+            <br />*@
             <div class="row">
                 <div class="col-lg-4 col-md-4">
 
                 </div>
                 <div class="col-lg-8 col-md-8">
-                    <button id="textButton" class="btn btn-success" style="width: 108px;height: 38px;">UPDATE</button>
+                    @*<button id="textButton" class="btn btn-success" style="width: 108px;height: 38px;">UPDATE</button>*@
+                    <button id="textButton" class="btn btn-success" onclick="EditSubmission('@Html.Raw(SubmisstionInfo.SubCode)', '@Html.Raw(SubmisstionInfo.Sub_ID)')" style="width: 108px;height: 38px;">UPDATE</button>
                 </div>
 
             </div>
@@ -48,9 +52,18 @@
 </div>
 
 <script>
-    $("#input-title, #input-des").kendoTextBox({
+    //$("#input-title, #input-des").kendoTextBox({
 
+    //});
+     var textbox = $("#input-title").kendoTextBox({
+
+    }).data("kendoTextBox");
+
+    $("#input-desc").kendoEditor({
+        tools: []
     });
+    var editor = $("#input-desc").data("kendoEditor");
+    editor.value(`@Html.Raw(SubmisstionInfo.Description).ToHtmlString()`);
 
 
     $('input[name=fileImage]').kendoUpload({
@@ -63,7 +76,88 @@
         validation: {
             maxFileSize: 5000000,//Dung lượng file upload 5mb
             allowedExtensions: [".jpeg", ".jpg", ".png", ".doc"],//Định dạng file
-        }
+        },
+        select: onCheckFile
     }).data("kendoUpload");
+
+    function onCheckFile(e) {
+        var files = e.files;
+        const acceptFiles = [".jpeg", ".jpg", ".png", ".doc", ".docx"]
+        $.each(files, function () {
+            console.log(acceptFiles.indexOf(this.extension.toLowerCase()))
+            if (acceptFiles.indexOf(this.extension.toLowerCase()) == -1) {
+                $("#textButton").attr("disabled", true);
+                e.preventDefault();
+            } else {
+                $("#textButton").removeAttr("disabled");
+            }
+        });
+    }
+
+     function EditSubmission(subcode, id) {
+        console.log("ggagagagag>>", id)
+        var formData = new FormData();
+        const acceptFiles = ["jpeg", "jpg", "png", "doc", "docx"]
+        formData.append("title", $("#input-title").data("kendoTextBox").value());
+        formData.append("description", $("#input-desc").val());
+        formData.append("Sub_ID", id);
+        formData.append("SubCode", subcode);
+        //var files = [];
+        //var lengthItem = $('input[name=fileImage]').length;
+        //for (var j = 0; j < lengthItem; j++) {
+        //    var length = $('input[name=fileImage]').get(j).files.length;
+        //    for (var i = 0; i < length; i++) {
+        //        if (acceptFiles.indexOf($('input[name=fileImage]').get(j).files[i].name.split('.').pop().toLowerCase()) != -1) {
+        //            files.push($('input[name=fileImage]').get(j).files[i]);
+        //        }
+
+        //    }
+        //}
+        //var lengthfiles = files.length;
+        //for (var i = 0; i < lengthfiles; i++) {
+        //    formData.append('files', files[i]);
+        //}
+        //console.log(files)
+        $.ajax({
+            url: '@Url.Action("EditSubmission", "AdminHome")',
+            type: "POST",
+            dataType: "json",
+            enctype: 'multipart/form-data',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (result) {
+                var popup = $("#popupEditWindows").data("kendoWindow");
+                popup.close();
+                if (result == 1) {
+                    GetData()
+                }
+            }
+        });
+
+    }
+
+    function GetData() {
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read: function (options) {
+                    $.ajax({
+                        url: '/AdminHome/GetSubmissionForAdmin',
+                        dataType: "json",
+                        type: "POST",
+                        success: function (result) {
+                            options.success(result);
+                        },
+                        error: function (result) {
+                            options.error(result);
+                        }
+                    });
+                }
+            },
+            pageSize: 25
+        });
+        var GridData = $("#ordersGrid").data('kendoGrid');
+        GridData.setDataSource(dataSource);
+    }
 </script>
 
