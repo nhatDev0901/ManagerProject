@@ -323,6 +323,7 @@
     <Content Include="Content\assets\images\lightbox\thumb-v-v-2.jpg" />
     <Content Include="Content\assets\images\lightbox\thumb-v-y-1.jpg" />
     <Content Include="Content\assets\images\lightbox\thumb-v-y-2.jpg" />
+    <Content Include="Content\assets\images\Logo-Greenwich.png" />
     <Content Include="Content\assets\images\logo-mini-4.svg" />
     <Content Include="Content\assets\images\logo-mini.svg" />
     <Content Include="Content\assets\images\logo-mini_10.svg" />
