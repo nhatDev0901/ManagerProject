@@ -199,6 +199,8 @@ namespace ManagerProject.Areas.Manager.Controllers
         [HttpPost]
         public ActionResult SetDeadLine(DateTime? start, DateTime? end, string title)
         {
+            var currDeadLine = DAManager.GetDeadLine();
+            var res = 0;
             var infoDL = new DEADLINE()
             {
                 DeadLine_Start = start,
@@ -206,7 +208,15 @@ namespace ManagerProject.Areas.Manager.Controllers
                 Created_Date = DateTime.Now,
                 DeadLine_Content = title
             };
-            var res = DAManager.SetDeadLine(infoDL);
+            if (currDeadLine != null)
+            {
+                res = DAManager.UpdateDateLine(infoDL);
+            }
+            else
+            {
+                res = DAManager.SetDeadLine(infoDL);
+            }
+            
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 

@@ -261,6 +261,25 @@ namespace ModelEF.DataAccess
             }
         }
 
+        public int UpdateDateLine(DEADLINE entity)
+        {          
+            try
+            {
+                entity.DeadLine_ID = 2;
+                var currentDeadLine = db.DEADLINEs.Find(entity.DeadLine_ID);
+                currentDeadLine.DeadLine_Content = entity.DeadLine_Content;
+                currentDeadLine.DeadLine_Start = entity.DeadLine_Start;
+                currentDeadLine.DeadLine_End = entity.DeadLine_End;
+
+                db.SaveChanges();
+                return 1;
+            }
+            catch (Exception e)
+            {
+
+                return -1;
+            }
+        }
         public DEADLINE GetDeadLine()
         {
             return db.DEADLINEs.FirstOrDefault();
