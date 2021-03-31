@@ -622,6 +622,7 @@
     <Content Include="Areas\Manager\Views\Login\_ForgotPassword.cshtml" />
     <Content Include="Areas\Manager\Views\ManagerHome\Statistic.cshtml" />
     <Content Include="Areas\Manager\Views\ManagerHome\DeadLine.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\Comment.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\fontawesome.min.js" />
     <Content Include="Scripts\Gsap.js" />

@@ -1,7 +1,7 @@
 ﻿@model List<ManagerProject.Models.CommentViewModel>
 @{
     ViewBag.Title = "Comments";
-    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutHome.cshtml";
 }
 
 <style>
@@ -146,8 +146,8 @@
         -o-transition: background-color 0.15s ease-in-out;
         transition: background-color 0.15s ease-in-out;
     }
-   /* --------------------------------------------------------------------*/
-   
+    /* --------------------------------------------------------------------*/
+
     #comments {
         box-shadow: 0 -1px 6px 1px rgba(0,0,0,0.1);
         background-color: #FFFFFF;
@@ -399,7 +399,7 @@
             @Html.Raw(ViewBag.TitleSub)
         </h3>
         <ul class="tags text-white pull-right">
-            @*<li><a href="#">features</a></li>*@
+            <li><a href="#">features</a></li>
         </ul>
     </div>
     <div class="post-user mt-n-lg">
@@ -466,7 +466,7 @@
     function AddComment() {
         var comment = $('#message').val();
         $.ajax({
-            url: "@Url.Action("AddComment", "Home")",
+            url: "@Url.Action("AddComment", "AdminHome")",
             type: "POST",
             dataType: "json",
             data: {
@@ -474,7 +474,7 @@
                 Comment: comment
             },
             success: function (result) {
-                location.href = '@Url.Action("Comment", "Home", new { SubID = ViewBag.SubID })'
+                location.href = '@Url.Action("Comment", "AdminHome", new { SubID = ViewBag.SubID })'
             }
         });
     }

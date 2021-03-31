@@ -95,5 +95,45 @@ namespace ManagerProject.Areas.Admin.Controllers
             
             return Json(null, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Comment(int SubID)
+        {
+            ViewBag.SubID = SubID;
+            var submission = dataAccess.GetSubmittionByID(SubID);
+
+            ViewBag.TitleSub = submission.Sub_Title;
+            ViewBag.Description = submission.Sub_Description;
+            ViewBag.CreatedDate = submission.Created_Date.Value.ToString("dd/MM/yyyy");
+            ViewBag.CreatedBy = submission.USER.Username;
+
+            var comments = dataAccess.GetListCommentBySubID(SubID);
+            var model = comments.Select(x => new CommentViewModel()
+            {
+                CommentID = x.Com_ID,
+                CommentContent = x.Com_Name,
+                UserID = x.User_ID,
+                Username = x.USER.Username,
+                SubID = x.Sub_ID,
+                CreatedBy = x.Created_By,
+                CreatedDate = x.Created_Date
+            }).OrderByDescending(x => x.CreatedDate).ToList();
+            return View(model);
+        }
+
+        public ActionResult AddComment(int SubID, string Comment)
+        {
+            var userInfo = (UserLoginModel)Session[Helper.Commons.USER_SEESION_ADMIN];
+            var newComment = new COMMENT()
+            {
+                Com_Name = Comment,
+                User_ID = userInfo.UserID,
+                Sub_ID = SubID,
+                Created_Date = DateTime.Now,
+                Created_By = userInfo.Username
+            };
+            var res = dataAccess.AddComment(newComment);
+
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
     }
 }
