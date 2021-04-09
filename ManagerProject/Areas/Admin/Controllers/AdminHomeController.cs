@@ -89,11 +89,20 @@ namespace ManagerProject.Areas.Admin.Controllers
             foreach (var item in listSubmiss)
             {
                 model.Sub_ID = item;
-                model.IsPublic = 1;
-                var resDB = dataAccess.EditPublicStatus(model);
+                model.IsPublic = 1;      
+                try
+                {
+                    var resDB = dataAccess.EditPublicStatus(model);
+                    resCode = 1;
+                }
+                catch (Exception e)
+                {
+                    resCode = -1;
+                    return Json(resCode, JsonRequestBehavior.AllowGet);
+                }
             }
             
-            return Json(null, JsonRequestBehavior.AllowGet);
+            return Json(resCode, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Comment(int SubID)

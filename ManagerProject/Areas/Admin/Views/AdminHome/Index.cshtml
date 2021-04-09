@@ -253,11 +253,15 @@
                 listSubmiss: ChooseFiles
             },
             success: function (result) {
-                alert(result + " files was public!")
-                GetDataAdmin()
+                //alert(result + " files was public!")
+                if (result == 1) {
+                    alert("You have submitted " + arrSelect1.length + " file")
+                    GetDataAdmin()
+                }
+               
             }
         });
-        alert("You submitted " + arrSelect1.length + " file.</br>" + arrSelect1)
+        
     }
 
     function GetDataAdmin() {
@@ -277,7 +281,11 @@
                     });
                 }
             },
-            pageSize: 25
+            pageSize: 10,
+            sort: {
+                field: "Created_Date",
+                dir: "desc"
+            }
         });
         var GridData = $("#ordersGrid").data('kendoGrid');
         GridData.setDataSource(dataSource);

@@ -265,7 +265,7 @@ namespace ManagerProject.Controllers
                 Description = x.Sub_Description,
                 Created_Date = x.Created_Date.ToString()
             }).ToList();
-            return Json(res, JsonRequestBehavior.AllowGet);
+            return Json(res.OrderBy(x => x.Created_Date), JsonRequestBehavior.AllowGet);
         }
 
         public static string RemoveHtmlTag(string content)
