@@ -23,7 +23,7 @@ namespace ManagerProject.Helper
                 var message = new MailMessage();
                 message.To.Add(new MailAddress(toEmail));
                 message.From = new MailAddress(fromEmail);
-                message.Subject = "NEW CONTRIBUTION FROM STUDENT" + submitterName;
+                message.Subject = "NEW CONTRIBUTION FROM STUDENT: " + submitterName;
                 message.Body = string.Format(body, submitterName, submitterID, submitterName, department, title, countFile);
                 message.IsBodyHtml = true;
 
